@@ -1,0 +1,24 @@
+{
+	"name": "Full Load MRP Variance",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Full Load MRP Variance",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-02-25T09:45:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
