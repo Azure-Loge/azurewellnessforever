@@ -1,0 +1,23 @@
+{
+	"name": "OMSMySql1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "MySql",
+		"typeProperties": {
+			"connectionString": "Server=wlns-prod-datalake-db02.cowdodgt70tj.ap-south-1.rds.amazonaws.com;Port=3306;Database=wellnessDB;User=wlns-analytics;SSLMode=1;UseSystemTrustStore=0",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "OMSNewPawd"
+			}
+		},
+		"connectVia": {
+			"referenceName": "Wellness-IntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"name": "SQL_HelthTech_Sale_Return_751_701_Credit",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "HelthTech_Sale_Return_751_701_Credit_Staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

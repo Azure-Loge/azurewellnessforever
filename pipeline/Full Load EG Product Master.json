@@ -1,0 +1,58 @@
+{
+	"name": "Full Load EG Product Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data Product Master",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MySqlSource",
+						"query": "SELECT wp.item_code\n,wp.item_fullname\n,wp.mrp\n,cm.channel_name\n,cp.publish_status\nFROM wellnessDB.product wp\nJOIN wellnessDB.channel_publish cp ON wp.product_id = cp.product_id\nJOIN wellnessDB.channel_master cm ON cp.channel_id = cm.channel_id\nWHERE wp.is_main_product = 0;"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table Eco_Green_Product_Master;",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "OMSMySqlTable",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ProductMasterOutputTable",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "ECO Green"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-02-24T03:46:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

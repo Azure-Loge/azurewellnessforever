@@ -1,0 +1,17 @@
+{
+	"name": "Stock_mst_tempTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Ex_Stock_Mst_Staging_temp"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

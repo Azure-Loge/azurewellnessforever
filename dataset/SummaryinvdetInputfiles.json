@@ -1,0 +1,683 @@
+{
+	"name": "SummaryinvdetInputfiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "inv_det",
+				"folderPath": "extratablesfull1/sales/FullLoad",
+				"container": "summary"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_srno",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_date",
+				"type": "INT96"
+			},
+			{
+				"name": "c_item_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_batch_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_sch_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_sch_disc",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_sale_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_disc_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_st_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cst_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_rst_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tax_suffer",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_amount",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_mf_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_2nd_sale",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_sp_sale_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cancel_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_ldate",
+				"type": "INT96"
+			},
+			{
+				"name": "n_vaton",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tax_on_sch_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_vatts_mrp",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_mrp",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_remark",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_tax_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_free_tax_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_print_batch",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_print_exp_dt",
+				"type": "INT96"
+			},
+			{
+				"name": "n_eff_pur_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_shift",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_remark2",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_points",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "t_ltime",
+				"type": "INT96"
+			},
+			{
+				"name": "n_req_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_allow_points",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_qty1",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_card_reverse_dis",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_dc_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_dc_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_dc_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_dc_srno",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_dc_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_remind_days",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_claim",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_order_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_order_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_order_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_order_no",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_order_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_claim_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_print_mfg_dt",
+				"type": "INT96"
+			},
+			{
+				"name": "c_ord_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_ord_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_ord_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_ord_srno",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ord_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cont_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_verified_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_claim_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_claim_val",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_coupon_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_coupon_srno",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_store_track",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_claim_reason",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_barcode",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_sman_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_godown_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_stk_serial",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_bom_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_bom_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_item_tax_suffer",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_item_vatts_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_item_vatts_mrp",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_item_tax_on_sch_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_tray_Code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_marketplace_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_quot_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_ts_value",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pick_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_share_disc",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ord_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ord_rate_diff",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_integration_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_update_stock",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_adjust",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_currency",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_exchange_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_gst_enabled",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_from_gst_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_hsn_sac_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_cgst_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cgst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_sgst_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_sgst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_igst_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_igst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cess_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cess_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pk",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_to_gst_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_gst_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_taxable_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_inv_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ref_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ord_pk",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_dc_pk",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_purord_pk",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_std_disc_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_total_discount",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_hold_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_print_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_eb_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_eb_tray_Code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_eb_doc_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_supp_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_eb_load",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_add_cess_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_add_cess_rev_excl",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cogs_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

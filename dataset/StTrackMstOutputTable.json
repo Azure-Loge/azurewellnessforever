@@ -1,0 +1,17 @@
+{
+	"name": "StTrackMstOutputTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "st_track_mst"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

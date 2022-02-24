@@ -1,0 +1,65 @@
+{
+	"name": "Stock_Godown_InputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "stock_godown",
+				"folderPath": "FullLoad",
+				"container": "inventory"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_item_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_batch_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_godown_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_hold_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_store_track_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_ldate",
+				"type": "INT96"
+			},
+			{
+				"name": "t_ltime",
+				"type": "INT96"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

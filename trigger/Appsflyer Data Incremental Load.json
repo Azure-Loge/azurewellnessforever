@@ -1,0 +1,24 @@
+{
+	"name": "Appsflyer Data Incremental Load",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Incremental Load Appsflyer Master",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2021-10-29T09:15:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

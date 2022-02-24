@@ -1,0 +1,135 @@
+{
+	"name": "B2CWelltoHlthInputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "B2CWelltoHlth",
+				"folderPath": "FullLoad",
+				"container": "ecogreen"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_tran_no",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_date",
+				"type": "INT96"
+			},
+			{
+				"name": "n_amount",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_opp_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_ref_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_ref_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_chq_date",
+				"type": "INT96"
+			},
+			{
+				"name": "c_remark",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_act_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_opp_act_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_add_1",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_add_2",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_add_3",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_city",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_ref_srno",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_order_no",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "recon_dt",
+				"type": "INT96"
+			},
+			{
+				"name": "chq_pass",
+				"type": "INT32"
+			},
+			{
+				"name": "multi_act_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "Debit",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "credit",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

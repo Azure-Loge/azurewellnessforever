@@ -1,0 +1,13 @@
+{
+	"name": "Ds_Ecogreenv2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "EG21",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SybaseTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

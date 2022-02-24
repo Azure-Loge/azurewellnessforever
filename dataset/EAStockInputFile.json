@@ -1,0 +1,115 @@
+{
+	"name": "EAStockInputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "stock",
+				"folderPath": "FullLoad",
+				"container": "inventory"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_item_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_batch_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_bal_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_sch_bal_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_ref_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_ref_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_ref_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_ref_srno",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_dc_inv_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_dc_pur_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_hold_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_ldate",
+				"type": "INT96"
+			},
+			{
+				"name": "t_ltime",
+				"type": "INT96"
+			},
+			{
+				"name": "c_grn_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_grn_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_grn_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_grn_srno",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_store_track_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

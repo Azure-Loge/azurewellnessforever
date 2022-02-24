@@ -1,0 +1,60 @@
+{
+	"name": "Full Load AppsFlyer Data",
+	"properties": {
+		"activities": [
+			{
+				"name": "Loads Customer Master",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_appsflyer_customer_master]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Load Appsflyer flags",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Loads Customer Master",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_Appsflyer_update_flags]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "AppsFlyer"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-10-13T03:59:51Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

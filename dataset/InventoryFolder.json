@@ -1,0 +1,20 @@
+{
+	"name": "InventoryFolder",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "inventory"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

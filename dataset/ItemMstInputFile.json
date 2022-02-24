@@ -1,0 +1,475 @@
+{
+	"name": "ItemMstInputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "item_mst",
+				"folderPath": "ecogreen/2021",
+				"container": "master"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_sh_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_barcode",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_pack_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_cat_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_mfac_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_qty_per_box",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_group_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_inc_exc_tax",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cont_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_schedule",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_note",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_ldate",
+				"type": "INT96"
+			},
+			{
+				"name": "d_adate",
+				"type": "INT96"
+			},
+			{
+				"name": "c_createuser",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_audited",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_predefined",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_disease_cat_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_pack_type_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_min_sale_qty",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_schedule_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_brand_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_strength",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_max_dis_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "t_ltime",
+				"type": "INT96"
+			},
+			{
+				"name": "n_self_barcode_req",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_min_margin_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_max_margin_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_lock_po",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_edi_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_service_item",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_storage_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_storage_care_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_block_exp_print",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_gen_item",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_web_img_link",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_inner_pack_lot",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_outer_pack_lot",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_uom",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_item_length",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_item_width",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_item_height",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_item_weight",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_inner_length",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_inner_width",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_inner_height",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_inter_weight",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_outer_length",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_outer_width",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_outer_height",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_outer_weight",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_batch_no_rule",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_exp_dt_rule",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_shelf_life",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_full_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_lock",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_modiuser",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_price_control_product",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_max_mrp",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_barcode_label",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_rate_item_batchwise",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_brand_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_cat_log_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cost_centre",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_stk_serial",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_qc_note1",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_qc_note2",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_external_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_salable_online",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_successive_item",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_mrp",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_ucode",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_sp_sale_qty_from",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_non_returnable_item",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_points",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_hsn_sac_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_hsn_sac_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_discount_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_gst_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_exclude_alternate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_brand_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_origin_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_mrp_box",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ptr_box",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ptr",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_consumption",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

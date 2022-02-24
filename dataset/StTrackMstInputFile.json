@@ -1,0 +1,127 @@
+{
+	"name": "StTrackMstInputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "st_track_mst ",
+				"folderPath": "ecogreen/FullLoad",
+				"container": "master"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_doc_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_inout",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_phase_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_cust_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_date",
+				"type": "INT96"
+			},
+			{
+				"name": "c_user",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_system_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_system_ip",
+				"type": "UTF8"
+			},
+			{
+				"name": "t_time_in",
+				"type": "INT96"
+			},
+			{
+				"name": "t_time_out",
+				"type": "INT96"
+			},
+			{
+				"name": "n_complete",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_confirm",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_urgent",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_sort",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_user_2",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_order_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_hold",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_note",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_dc_div",
+				"type": "UTF8"
+			},
+			{
+				"name": "t_confirm_time",
+				"type": "INT96"
+			},
+			{
+				"name": "c_confirm_user",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_fulfillment_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

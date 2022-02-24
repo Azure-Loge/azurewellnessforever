@@ -1,0 +1,17 @@
+{
+	"name": "SQL_EG_Inv_Det",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "EG_Inv_Det"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

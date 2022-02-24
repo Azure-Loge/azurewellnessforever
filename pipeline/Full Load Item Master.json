@@ -1,0 +1,177 @@
+{
+	"name": "Full Load Item Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data Item Master",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data EG Get Item",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate TABLE  Eco_Green_Item_Master",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ecogreen_Itemmaster_OutputFile",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ItemMasterOutPutTable",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data EG Get Item",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Delete Item Master CSV File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SybaseSource",
+						"query": "SELECT Item_mst.c_code AS Item_Code,\n       Item_mst.c_name AS Item_Name,\n       item_mst.d_adate as Created_date,\ncase when item_category_class_mst.c_code='ICL003' or item_category_class_mst.c_code='L1P001' or item_category_class_mst.c_code='L1P002' then 'PHARMA'\n\t when  item_category_class_mst.c_code='ICL004' then 'SURGICAL'\n\t when item_category_class_mst.c_code='ICL007' then 'CONSUMABLE'\n\t when item_category_class_mst.c_code='L1P005' then 'OPRS'\nelse 'FMCG' end  As Main_Category,\n     \n       item_category_mst.c_name AS category,\n       item_category_class_mst.c_name As Category_Class,\n       item_category_head_mst.c_name As Category_Head,\n     \n       item_group_mst.c_name AS Group_Name,\n     \n       Item_mst.n_lock_po AS Lock_PO,\n      Item_mst.n_lock AS n_lock\nFROM Item_mst\n     \nINNER JOIN item_category_mst ON Item_mst.c_cat_code = item_category_mst.c_code\nINNER JOIN item_category_head_mst ON item_category_mst.c_item_category_head_code = item_category_head_mst.c_code\nINNER JOIN item_category_class_mst ON item_category_head_mst.c_item_category_class_code = item_category_class_mst.c_code\ninner join item_group_mst on item_group_mst.c_code = item_mst.c_group_code"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ds_Ecogreenv2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Ecogreen_Itemmaster_OutputFile",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Stored procedure Update Column",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data Item Master",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_Eco_Green_Update_Columns]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Delete Item Master CSV File",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Ecogreen_Itemmaster_OutputFile",
+						"type": "DatasetReference"
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "ECO Green"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-11-09T04:24:11Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

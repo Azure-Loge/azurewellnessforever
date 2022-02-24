@@ -1,0 +1,183 @@
+{
+	"name": "Stock_Mst_InputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "stock_mst",
+				"folderPath": "FullLoad",
+				"container": "inventory"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_item_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_batch_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_exp_dt",
+				"type": "INT96"
+			},
+			{
+				"name": "n_mrp",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pur_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_sale_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_eff_pur_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tax_suffer",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_inc_exc_tax",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_add_val",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_lock",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_mrp_box",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pur_rate_box",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_qty_per_box",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_ldate",
+				"type": "INT96"
+			},
+			{
+				"name": "d_adate",
+				"type": "INT96"
+			},
+			{
+				"name": "c_createuser",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_audited",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_predefined",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ptr_box",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ptr",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "t_ltime",
+				"type": "INT96"
+			},
+			{
+				"name": "c_mfac_sh_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_permanent_lock",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_note",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_brand_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_mfac_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_mfg_dt",
+				"type": "INT96"
+			},
+			{
+				"name": "c_modiuser",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_qc_per1",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_qc_per2",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

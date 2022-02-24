@@ -1,0 +1,139 @@
+{
+	"name": "Full Load OMS Order Details",
+	"properties": {
+		"activities": [
+			{
+				"name": "MySQL to SQL server",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MySqlSource",
+						"query": "SELECT DISTINCT\n ws.sale_id AS Order_Id\n,ws.sale_code\n,ws.created_date AS Order_Date\n,STR_TO_DATE(ws.processing_date,'%Y-%m-%d %H:%i:%s') as processing_date\n,STR_TO_DATE(ws.invoice_date,'%Y-%m-%d %H:%i:%s') as invoice_date\n,ws.user_name AS Customer_Name\n,ws.Customer_id\n,ws.store_id\n,wd.rx_type AS RX_type\n,wd.product_id\n,wd.mrp\n,wd.price\n,wd.quantity\n,ws.coupon_discount AS discount_on_order\n,ws.coupon_code\n,ws.grand_total\n,ws.order_invoice_amt\n,ws.txn_status\n,ws.payment_type AS Payment_mode\n,ws.online_TXN\n,ws.ERP_transactionid AS ERP_Id\n,ws.order_invoice_no AS Invoice_no\n,ws.delivery_status AS Order_Status\n,ws.partial_invoice\n,ws.DMS_jobid\n,ws.dman_id\n,ws.dman_name\n,ws.thirdPartyJobStatus\n,ws.three_pl_name\n,STR_TO_DATE(ws.DMS_eta_IST,'%Y-%m-%d %H:%i:%s') AS Actual_Delivery_date\n,STR_TO_DATE(ws.delivered_date,'%Y-%m-%d %H:%i:%s') AS Delivered_date\n,ws.cancel_reason\n,ws.remark\n,ws.MFM_timeframe\n,ws.sale_platform\n,ws.dman_payment_status AS Reconciled\n,ws.collected_amount AS Collected_amount\n,wd.item_code\n,concat(ws.store_id, '/', ws.sale_id, '/', wd.item_code) as brcode_orderid_itemcode_key\n,ws.order_parent_id\n,ws.buyer\nFROM  wellnessDB.order_details wd\nLEFT JOIN wellnessDB.sale ws ON wd.sale_id = ws.sale_id\nWHERE ws.created_date BETWEEN ('2020-04-01') AND ('2021-12-14')\nAND wd.status = 1\nORDER BY ws.sale_id ASC;"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table oms_order_details",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "OMSMySqlTable",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "OMSSqlServerTable",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Add columns",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "MySQL to SQL server",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[oms_order_details_add_column]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SP Update Hour Bucket",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Update Order Revised Status",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_OMS_Order_Details_Update_Hour_Bucket]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Update Order Revised Status",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Add columns",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[USP_Update_Revised_Status]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "Order Details"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-12-14T15:44:53Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

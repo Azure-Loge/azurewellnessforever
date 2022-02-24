@@ -1,0 +1,17 @@
+{
+	"name": "FillRate_OutPutTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "FillRate_Staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

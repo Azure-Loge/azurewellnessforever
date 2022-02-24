@@ -1,0 +1,12 @@
+{
+	"name": "SybaseIRMaster",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/SybaseIRMaster",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}

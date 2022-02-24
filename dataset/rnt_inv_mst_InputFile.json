@@ -1,0 +1,735 @@
+{
+	"name": "rnt_inv_mst_InputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "rtn_inv_mst",
+				"folderPath": "FullLoad",
+				"container": "sales"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_srno",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_date",
+				"type": "INT96"
+			},
+			{
+				"name": "t_time",
+				"type": "INT96"
+			},
+			{
+				"name": "c_sman_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_dman_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_cust_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_patient",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_doctor_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_doctor_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_total",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_st",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cst",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_rst",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_disc_rs",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_discount",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_other_charge",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tax_suffer",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_discount_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_taxable_ret",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_non_taxable_ret",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_credit_act",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_round_off",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_counter_sale",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cnt_no",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ok",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cancel_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_ldate",
+				"type": "INT96"
+			},
+			{
+				"name": "n_vaton",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_order_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_order_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_order_no",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_approved",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_shift",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_ipno",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_remark",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_patient_details",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_card_bank_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_ref_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_user",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_points",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_point_redeem",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_point_value",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pcbc_charge",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "t_ltime",
+				"type": "INT96"
+			},
+			{
+				"name": "d_remind_date",
+				"type": "INT96"
+			},
+			{
+				"name": "n_card_reverse_dis",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_doctor_office_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_mobile",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_ref_dt",
+				"type": "INT96"
+			},
+			{
+				"name": "n_day_seq",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_lr_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_lr_date",
+				"type": "INT96"
+			},
+			{
+				"name": "d_stock_sent_date",
+				"type": "INT96"
+			},
+			{
+				"name": "n_cases",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_credit_days",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_admin_settlement",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_terms_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_reg_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_email",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_mr_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_transport_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_urgent",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_modiuser",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_tender_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_token_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_coupon_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_coupon_srno",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_store_track",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_ip_br_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_tran_type",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_currency_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_exchange_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_computer_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_sys_user",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_sys_ip",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_multi_payment",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_code1",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_pay_amt1",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code1",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_pay_code2",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_pay_amt2",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code2",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_pay_code3",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_pay_amt3",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code3",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_pay_code4",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_pay_amt4",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code4",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_pay_code5",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_pay_amt5",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code5",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_marketplace_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_trader_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_trader_comm_total",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_trader_charge_total",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_trader_charge1_total",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_inter_pur",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_order_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_debit_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_vat_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_purord_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_share_disc",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_integration_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_cst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_st_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_amt_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_disc_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_discrs_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_oth_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_update_stock",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "t_from_time",
+				"type": "INT96"
+			},
+			{
+				"name": "t_to_time",
+				"type": "INT96"
+			},
+			{
+				"name": "c_note",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_point_factor",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_gst_enabled",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_from_gst_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_from_gst_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_to_gst_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_sale_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cgst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_cgst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_sgst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_sgst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_igst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_igst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cess_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_cess_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_state_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_eway_bill_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_pk",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_to_gst_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_print_format_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_cess_rev_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_cgst_rev_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_sgst_rev_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_igst_rev_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_taxable_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_reason_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_eway_bill_date",
+				"type": "INT96"
+			},
+			{
+				"name": "c_tran_gst_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_dist_km",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cogs_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cogst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_inventory_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_admin_br_code",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

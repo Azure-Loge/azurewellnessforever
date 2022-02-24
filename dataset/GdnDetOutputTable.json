@@ -1,0 +1,17 @@
+{
+	"name": "GdnDetOutputTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "gdn_det_staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

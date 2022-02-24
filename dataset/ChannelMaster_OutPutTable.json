@@ -1,0 +1,48 @@
+{
+	"name": "ChannelMaster_OutPutTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "channel_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "channel_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "channel",
+				"type": "nvarchar"
+			},
+			{
+				"name": "api_key",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cart_discount_channel",
+				"type": "nvarchar"
+			},
+			{
+				"name": "discount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "channel_status",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "OMS_Channel_Master"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

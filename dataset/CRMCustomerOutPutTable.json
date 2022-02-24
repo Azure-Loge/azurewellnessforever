@@ -1,0 +1,17 @@
+{
+	"name": "CRMCustomerOutPutTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "excl_bzn_customers"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

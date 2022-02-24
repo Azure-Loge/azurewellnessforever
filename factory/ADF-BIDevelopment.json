@@ -1,0 +1,9 @@
+{
+	"name": "ADF-BIDevelopment",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e50164ac-0b09-42f5-8389-bc87f9b9263c",
+		"tenantId": "b92a01c1-b0f2-4ed0-ac28-10d1345b5076"
+	}
+}

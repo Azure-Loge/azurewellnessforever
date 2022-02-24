@@ -1,0 +1,1064 @@
+{
+	"name": "Product_OutPutTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "product_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "rating_num",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "rating_total",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rating_user",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_rating",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_popularity",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "product_sales",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_alias",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_main_product",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "main_product_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "hsn_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "added_by",
+				"type": "nvarchar"
+			},
+			{
+				"name": "vendor_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "category",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "erp_category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "category_head",
+				"type": "nvarchar"
+			},
+			{
+				"name": "category_class",
+				"type": "nvarchar"
+			},
+			{
+				"name": "description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sub_category",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "num_of_imgs",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sale_price",
+				"type": "decimal",
+				"precision": 20,
+				"scale": 2
+			},
+			{
+				"name": "offer_price",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "crm_price",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "price_to_retailer",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "mrp",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "old_mrp",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "median_mrp",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "purchase_price",
+				"type": "decimal",
+				"precision": 20,
+				"scale": 2
+			},
+			{
+				"name": "shipping_cost",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "add_timestamp",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tag",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_free_product",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "status",
+				"type": "nvarchar"
+			},
+			{
+				"name": "front_image",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "current_stock",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "warehouse_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "supplier_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "unit",
+				"type": "nvarchar"
+			},
+			{
+				"name": "volumetric_weight",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "deadweight",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "additional_fields",
+				"type": "nvarchar"
+			},
+			{
+				"name": "number_of_view",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "discount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "discount_per_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "discount_type",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "discount_start_date",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "discount_end_date",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "tax",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tax_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cgst",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "cgst_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sgst",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "sgst_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "igst",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "igst_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "voucher_class_id",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "color_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "options",
+				"type": "nvarchar"
+			},
+			{
+				"name": "main_image",
+				"type": "nvarchar"
+			},
+			{
+				"name": "update_time",
+				"type": "nvarchar"
+			},
+			{
+				"name": "requirements",
+				"type": "nvarchar"
+			},
+			{
+				"name": "logo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "video",
+				"type": "nvarchar"
+			},
+			{
+				"name": "notify_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "notify_email",
+				"type": "nvarchar"
+			},
+			{
+				"name": "last_viewed",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "created_format",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "product_group_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "is_active",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "all_product_published",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "izoleap_product_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_variant_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "stock_master_count",
+				"type": "nvarchar"
+			},
+			{
+				"name": "unit_price",
+				"type": "decimal",
+				"precision": 20,
+				"scale": 2
+			},
+			{
+				"name": "reorder_level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_available",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_perishable",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "only_at_store",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "expiry_duration",
+				"type": "nvarchar"
+			},
+			{
+				"name": "expiry_date",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "manufacture_date",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "sku_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_brief",
+				"type": "nvarchar"
+			},
+			{
+				"name": "adjancey_tag",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rank_tag",
+				"type": "nvarchar"
+			},
+			{
+				"name": "loose_sales_allowed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "shopby_brand",
+				"type": "nvarchar"
+			},
+			{
+				"name": "shopby_condition",
+				"type": "nvarchar"
+			},
+			{
+				"name": "vendor_type",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "molecule",
+				"type": "nvarchar"
+			},
+			{
+				"name": "strength_type",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "vegetarian_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rx_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "schedule_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "max_quantity",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "item_groupname",
+				"type": "nvarchar"
+			},
+			{
+				"name": "item_fullname",
+				"type": "nvarchar"
+			},
+			{
+				"name": "item_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "web_",
+				"type": "nvarchar"
+			},
+			{
+				"name": "branch_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "app_category_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "web_category_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "instore_category_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "manfacturer_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ean",
+				"type": "nvarchar"
+			},
+			{
+				"name": "max_mrp",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "min_mrp",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "maxdiscount_percentage",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "discount_value",
+				"type": "real",
+				"precision": 7
+			},
+			{
+				"name": "gst_master_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "gst_master_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "gst_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "inclusive_exclusive_tax",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "pack_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "form_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "packing_form",
+				"type": "nvarchar"
+			},
+			{
+				"name": "form",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pack_size",
+				"type": "nvarchar"
+			},
+			{
+				"name": "seller_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "seller_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "seller_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "schedule_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "min_sale_qty",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "storage_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "packaging_form_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "succesive_item",
+				"type": "nvarchar"
+			},
+			{
+				"name": "hsn_sac_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "hsn_sac_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pims_nfs_remark",
+				"type": "nvarchar"
+			},
+			{
+				"name": "erp_nfs_remark",
+				"type": "nvarchar"
+			},
+			{
+				"name": "if_audited",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_chronic",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "nasp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "drop_shipment",
+				"type": "nvarchar"
+			},
+			{
+				"name": "returnable",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "returnable_days",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "dpco",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "propaganda",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "hsn_sac_status",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "pims_status",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "erp_status",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "pims_nfs",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "erp_nfs",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_fragile",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "shelf_life_duration",
+				"type": "nvarchar"
+			},
+			{
+				"name": "barcode_value",
+				"type": "nvarchar"
+			},
+			{
+				"name": "main_product_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "varient_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "batch_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "created_on",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "update_on",
+				"type": "nvarchar"
+			},
+			{
+				"name": "created_by",
+				"type": "nvarchar"
+			},
+			{
+				"name": "updated_by",
+				"type": "nvarchar"
+			},
+			{
+				"name": "manufacturer_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "manufacturer_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "wellness_exclusive",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "freebie",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "banned_product",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "banned_product_remark",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pack_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pack_type_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "flavor_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pack_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "if_po_locked",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "zedc_tag",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pharmacist_info_dgt",
+				"type": "nvarchar"
+			},
+			{
+				"name": "item_category_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "expiry_format_code",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "service_item",
+				"type": "nvarchar"
+			},
+			{
+				"name": "inner_pack_lot",
+				"type": "nvarchar"
+			},
+			{
+				"name": "outer_pack_lot",
+				"type": "nvarchar"
+			},
+			{
+				"name": "unit_per_packcode",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "purchase_margin",
+				"type": "decimal",
+				"precision": 6,
+				"scale": 2
+			},
+			{
+				"name": "min_margin_percentage",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 2
+			},
+			{
+				"name": "max_margin_percentage",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 2
+			},
+			{
+				"name": "item_groupcode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "disease_category_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "disease_categeory_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "strength",
+				"type": "nvarchar"
+			},
+			{
+				"name": "batchnotype",
+				"type": "nvarchar"
+			},
+			{
+				"name": "batch_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "batchexpiry_date",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "pack_type_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "storage_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "storage_care_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "storage_care_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "block_expiry_print",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "edi_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "note",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_predefined",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_lock",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "premanent_lock",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "item_lock",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_online",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "country_origin",
+				"type": "nvarchar"
+			},
+			{
+				"name": "country_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "rx_wsp",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "out_of_stock",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_otc",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "concerns",
+				"type": "nvarchar"
+			},
+			{
+				"name": "item_weight",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 2
+			},
+			{
+				"name": "interweightount",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 2
+			},
+			{
+				"name": "content_type_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "content_type_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_mrp_box",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "storage_flag",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_deleted",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_360",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "is_approved",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_search_promoted",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_viewed",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "rejected_reason",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_erp_updated",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_mrp_updated",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_pims_updated",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "product_set",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "product_set_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "prescription_class",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "discount_class",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "optional_class",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "aws_asin_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "aws_qty",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "is_etaflag_updated",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_restricted",
+				"type": "smallint",
+				"precision": 5
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "OMS_Product"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

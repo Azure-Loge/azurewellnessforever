@@ -1,0 +1,17 @@
+{
+	"name": "Amazon_Item_OutPutTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Amazon_OMS_Order_Details_staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

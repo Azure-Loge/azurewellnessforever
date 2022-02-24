@@ -1,0 +1,122 @@
+{
+	"name": "Full Load EG pur det",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data Eco Green Pur Det",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SybaseSource",
+						"query": "Select * ,\n(c_br_code+'/'+c_year+'/'+c_prefix+'/'+ cast(cast(n_Order_no as float) as varchar) ) 'brcode_year_prefix_orderno_key'\n from pur_det where c_mf_code in ('MF0764','MF4649','MF5885','MF1235','MF1432','MF1861')"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ds_Ecogreenv2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "EG_Pur_Det_OutPutFile",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data eco green pur det file to table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data Eco Green Pur Det",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EG_Pur_Det_OutPutFile",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "EG_Pur_Det_OutPutTable",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "ECO Green"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-11-18T13:24:49Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,58 @@
+{
+	"name": "Full Load Mega Menu",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data mega menu",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MySqlSource",
+						"query": "SELECT DISTINCT(wp.`item_code`)\n,wp.`item_fullname`\n,cm.channel_id\n,wc.`category_name`\n,wc.`level`\nFROM wellnessDB.`product` wp\nLEFT JOIN wellnessDB.`channel_publish` cp ON wp.`product_id` = cp.`product_id`\nLEFT JOIN wellnessDB.`channel_master` cm ON cp.`channel_id` = cm.`channel_id`\nLEFT JOIN wellnessDB.`category_channel_mappings` ccm ON wp.`product_id` = ccm.`product_id`\nLEFT JOIN wellnessDB.`category` wc ON ccm.`category_id` = wc.`category_id`\nWHERE wp.`is_main_product` = 0 and cm.channel_id in(1,2) and wc.`category_name` not like 'DEFAULT%'\nORDER BY wp.`item_fullname` ASC"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table Mega_Menu_Staging;",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "OMSMySqlTable",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Mega_Menu_OutputTable",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Mega Menu"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-12-13T08:22:34Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

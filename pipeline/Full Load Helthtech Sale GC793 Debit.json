@@ -1,0 +1,149 @@
+{
+	"name": "Full Load Helthtech Sale GC793 Debit",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data HelthTech Sale GC793 Debit",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Delete File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SybaseSource",
+						"query": "SELECT c_br_code,c_year,c_prefix,n_srno,d_date,c_cust_code,c_order_id,n_total FROM dba.inv_mst where c_br_code = '751' and c_cust_code = 'GC793' and convert(date,d_date) > '2021-10-01'"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ds_Ecogreenv2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "RL_HelthTech_Sale_GC793_Debit",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data HelthTech Sale GC793 File to Table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data HelthTech Sale GC793 Debit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "RL_HelthTech_Sale_GC793_Debit",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SQL_HelthTech_Sale_GC793_Debit",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Delete File",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "RL_HelthTech_Sale_GC793_Debit",
+						"type": "DatasetReference"
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Reconciliation Ledgers"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-01-05T04:33:12Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

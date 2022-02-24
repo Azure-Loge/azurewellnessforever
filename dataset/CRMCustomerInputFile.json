@@ -1,0 +1,195 @@
+{
+	"name": "CRMCustomerInputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "excl_bzn_customers",
+				"folderPath": "extratablesfull1/CRM_extratables",
+				"container": "summary"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "customer_id",
+				"type": "INT32"
+			},
+			{
+				"name": "active_status",
+				"type": "UTF8"
+			},
+			{
+				"name": "first_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "last_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "gender",
+				"type": "UTF8"
+			},
+			{
+				"name": "mobile",
+				"type": "UTF8"
+			},
+			{
+				"name": "dnd_status",
+				"type": "UTF8"
+			},
+			{
+				"name": "date_whitelisted",
+				"type": "INT96"
+			},
+			{
+				"name": "blacklist",
+				"type": "INT32"
+			},
+			{
+				"name": "email",
+				"type": "UTF8"
+			},
+			{
+				"name": "dob",
+				"type": "INT96"
+			},
+			{
+				"name": "date_aniversary",
+				"type": "INT96"
+			},
+			{
+				"name": "creating_business_id",
+				"type": "INT32"
+			},
+			{
+				"name": "customer_source",
+				"type": "UTF8"
+			},
+			{
+				"name": "address",
+				"type": "UTF8"
+			},
+			{
+				"name": "city",
+				"type": "UTF8"
+			},
+			{
+				"name": "state",
+				"type": "UTF8"
+			},
+			{
+				"name": "zipcode",
+				"type": "UTF8"
+			},
+			{
+				"name": "date_email_verified",
+				"type": "INT96"
+			},
+			{
+				"name": "email_verified",
+				"type": "UTF8"
+			},
+			{
+				"name": "date_created",
+				"type": "INT96"
+			},
+			{
+				"name": "date_updated",
+				"type": "INT96"
+			},
+			{
+				"name": "created_by",
+				"type": "UTF8"
+			},
+			{
+				"name": "updated_by",
+				"type": "UTF8"
+			},
+			{
+				"name": "facebookId",
+				"type": "UTF8"
+			},
+			{
+				"name": "pointsEarned",
+				"type": "INT32"
+			},
+			{
+				"name": "pointsRedeemed",
+				"type": "INT32"
+			},
+			{
+				"name": "image",
+				"type": "UTF8"
+			},
+			{
+				"name": "role_id",
+				"type": "INT32"
+			},
+			{
+				"name": "password",
+				"type": "UTF8"
+			},
+			{
+				"name": "facebook_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "date_last_login",
+				"type": "INT96"
+			},
+			{
+				"name": "account_type",
+				"type": "UTF8"
+			},
+			{
+				"name": "registration_ip",
+				"type": "UTF8"
+			},
+			{
+				"name": "comments",
+				"type": "UTF8"
+			},
+			{
+				"name": "password_sent",
+				"type": "UTF8"
+			},
+			{
+				"name": "date_deactivated",
+				"type": "INT96"
+			},
+			{
+				"name": "gstn_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "pan_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "latitude",
+				"type": "UTF8"
+			},
+			{
+				"name": "longitude",
+				"type": "UTF8"
+			},
+			{
+				"name": "blocked_date",
+				"type": "INT96"
+			},
+			{
+				"name": "lotalty_tier",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

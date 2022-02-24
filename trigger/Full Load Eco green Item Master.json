@@ -1,0 +1,24 @@
+{
+	"name": "Full Load Eco green Item Master",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Full Load Item Master",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2021-12-07T19:00:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

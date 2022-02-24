@@ -1,0 +1,24 @@
+{
+	"name": "HelthTech_GC793_Debit_HelthTech_751_Credit",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "HelthTech_GC793_Debit_HelthTech_751_Credit",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-01-12T10:10:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

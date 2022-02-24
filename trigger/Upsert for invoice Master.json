@@ -1,0 +1,24 @@
+{
+	"name": "Upsert for invoice Master",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Upsert Incremental For inv Master",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2021-12-14T15:45:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

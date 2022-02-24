@@ -1,0 +1,13 @@
+{
+	"name": "OMSMySqlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OMSMySql1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "MySqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

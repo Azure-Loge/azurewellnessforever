@@ -1,0 +1,17 @@
+{
+	"name": "SQL_Medicare_S14278_Debit",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Medicare_S14278_Debit_Staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "OrderStatusOutputTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Order_Status_Master"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

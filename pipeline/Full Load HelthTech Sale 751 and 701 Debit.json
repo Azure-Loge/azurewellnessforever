@@ -1,0 +1,119 @@
+{
+	"name": "Full Load HelthTech Sale 751 and 701 Debit",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data HelthTech Sale 751  and 701 to File",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SybaseSource",
+						"query": "SELECT c_br_code,c_year,c_prefix,n_srno,d_date,c_cust_code,c_order_id,n_total FROM dba.inv_mst where c_br_code in ('751' ,'701') and c_cust_code = 'GC793' and convert(date,d_date) > '2021-10-01'"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ds_Ecogreenv2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "RL_HelthTech_Sale_751_701_Debit",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy dataHelthTech Sale 751 and 701 Debit File to Table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data HelthTech Sale 751  and 701 to File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "RL_HelthTech_Sale_751_701_Debit",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SQL_HelthTech_Sale_751_701_Debit",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Reconciliation Ledgers"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-01-31T05:51:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

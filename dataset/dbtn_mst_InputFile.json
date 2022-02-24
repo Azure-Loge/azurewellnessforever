@@ -1,0 +1,413 @@
+{
+	"name": "dbtn_mst_InputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "dbnt_mst",
+				"folderPath": "FullLoad",
+				"container": "finance"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "c_br_Code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_year",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_prefix",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_srno",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_date",
+				"type": "INT96"
+			},
+			{
+				"name": "c_cust_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_sman_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_total",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_other_charge",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_detail",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_non_taxable_ret",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_round_off",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cnt_no",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_settle",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_settle_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cancel_flag",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_ldate",
+				"type": "INT96"
+			},
+			{
+				"name": "n_shift",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_item_disc",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_st",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cst",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_freight",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_remark",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_user",
+				"type": "UTF8"
+			},
+			{
+				"name": "t_time",
+				"type": "INT96"
+			},
+			{
+				"name": "t_ltime",
+				"type": "INT96"
+			},
+			{
+				"name": "c_reason_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_settle_days",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_lr_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_lr_date",
+				"type": "INT96"
+			},
+			{
+				"name": "d_stock_sent_date",
+				"type": "INT96"
+			},
+			{
+				"name": "n_cases",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_approved",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_approved_by",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_modiuser",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_item_level_settle",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_currency_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_exchange_rate",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_computer_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_sys_user",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_sys_ip",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_credit_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_share_disc",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_debit_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_order_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_integration_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_store_track",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_note",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_gst_enabled",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_from_gst_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_from_gst_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_to_gst_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_sale_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cgst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_cgst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_sgst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_sgst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_igst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_igst_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cess_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_cess_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_state_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_eway_bill_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_pk",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_to_gst_type",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_print_format_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_type_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_cogs_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_transport_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_dist_km",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_tran_gst_no",
+				"type": "UTF8"
+			},
+			{
+				"name": "d_eway_bill_date",
+				"type": "INT96"
+			},
+			{
+				"name": "c_inventory_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "c_cogst_act_code",
+				"type": "UTF8"
+			},
+			{
+				"name": "n_tcs_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tcs_taxable_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tcs_amt",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_disc_per",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_godown_code",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

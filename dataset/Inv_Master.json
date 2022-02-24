@@ -1,0 +1,17 @@
+{
+	"name": "Inv_Master",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Inv_Master"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "SQL_Medicare_Sale_751_Debit",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Medicare_Sale_751_Debit_Staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

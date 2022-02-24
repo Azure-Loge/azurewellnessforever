@@ -1,0 +1,106 @@
+{
+	"name": "ExcelInputTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "userid",
+				"type": "nvarchar"
+			},
+			{
+				"name": "customer_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "customer_id_merge",
+				"type": "nvarchar"
+			},
+			{
+				"name": "afid",
+				"type": "nvarchar"
+			},
+			{
+				"name": "os",
+				"type": "nvarchar"
+			},
+			{
+				"name": "osversion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "event_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "media_source",
+				"type": "nvarchar"
+			},
+			{
+				"name": "order_source",
+				"type": "nvarchar"
+			},
+			{
+				"name": "final_source",
+				"type": "nvarchar"
+			},
+			{
+				"name": "city",
+				"type": "nvarchar"
+			},
+			{
+				"name": "postal_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "platform",
+				"type": "nvarchar"
+			},
+			{
+				"name": "install_time_selected_timezone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "updated",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "event_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "event_time_selected_timezone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "gcm_date_created",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "created",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "OMS_appsflyer2"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

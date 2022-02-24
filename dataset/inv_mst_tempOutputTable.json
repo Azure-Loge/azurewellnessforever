@@ -1,0 +1,867 @@
+{
+	"name": "inv_mst_tempOutputTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "c_br_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_prefix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_srno",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_date",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "t_time",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "c_sman_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_dman_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_cust_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_patient",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_doctor_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_doctor_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_total",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_st",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cst",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_rst",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_disc_rs",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_discount",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_other_charge",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tax_suffer",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_discount_per",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_taxable_ret",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_non_taxable_ret",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_credit_act",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_round_off",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_counter_sale",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cnt_no",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ok",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_cancel_flag",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_ldate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "n_vaton",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_order_year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_order_prefix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_order_no",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_approved",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_shift",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_ipno",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_remark",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_patient_details",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_card_bank_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_ref_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_user",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_points",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_point_redeem",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_point_value",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pcbc_charge",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "t_ltime",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "d_remind_date",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "n_card_reverse_dis",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_doctor_office_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_mobile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "d_ref_dt",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "n_day_seq",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_lr_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "d_lr_date",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "d_stock_sent_date",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "n_cases",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_credit_days",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_admin_settlement",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_terms_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_reg_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_email",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_mr_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_transport_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_urgent",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_modiuser",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_tender_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_token_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_coupon_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_coupon_srno",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_store_track",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_ip_br_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_tran_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_currency_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_exchange_rate",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_computer_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_sys_user",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_sys_ip",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_multi_payment",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_code1",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_pay_amt1",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code1",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_pay_code2",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_pay_amt2",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code2",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_pay_code3",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_pay_amt3",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code3",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_pay_code4",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_pay_amt4",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code4",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_pay_code5",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_pay_amt5",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_pay_ac_code5",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_marketplace_flag",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_trader_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_trader_comm_total",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_trader_charge_total",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_trader_charge1_total",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_inter_pur",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_order_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_debit_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_vat_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_purord_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_share_disc",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_integration_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_cst_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_st_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_amt_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_disc_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_discrs_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_oth_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_update_stock",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "t_from_time",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "t_to_time",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "c_note",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_point_factor",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_gst_enabled",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_from_gst_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_from_gst_type",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_to_gst_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_sale_type",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cgst_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_cgst_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_sgst_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_sgst_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_igst_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_igst_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_cess_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_cess_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_state_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_eway_bill_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_pk",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_to_gst_type",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_print_format_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_cess_rev_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_cgst_rev_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_sgst_rev_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_igst_rev_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_service_chg",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_port_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_taxable_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pending_points",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pay_ac1_flag",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pay_ac2_flag",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pay_ac3_flag",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pay_ac4_flag",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_pay_ac5_flag",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "d_eway_bill_date",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "c_tran_gst_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_dist_km",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_service_amt_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_ip_det_seq",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_aadhar_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_doctor_address",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_act_sman_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_advance_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_ord_br_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_ord_prefix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_ord_year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_ord_no",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_ord_pk",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_add_cess_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_add_cess_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_cogs_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "c_inventory_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_cogst_act_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_admin_br_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_tcs_per",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tcs_taxable_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "n_tcs_amt",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "upsert_key",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "inv_mst_temp"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

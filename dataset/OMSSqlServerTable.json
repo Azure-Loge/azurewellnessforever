@@ -1,0 +1,17 @@
+{
+	"name": "OMSSqlServerTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "OMS_Order_Details"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

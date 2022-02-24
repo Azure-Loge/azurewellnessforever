@@ -1,0 +1,603 @@
+{
+	"name": "inv_det_tempOutputTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "c_br_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_prefix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_srno",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "d_date",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "c_item_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_batch_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_qty",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_sch_qty",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_sch_disc",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_sale_rate",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_disc_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_st_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_cst_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_rst_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_tax_suffer",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_amount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_mf_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_2nd_sale",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_sp_sale_flag",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_cancel_flag",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "d_ldate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "n_vaton",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_tax_on_sch_qty",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_vatts_mrp",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_mrp",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_remark",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_tax_amt",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_free_tax_amt",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_print_batch",
+				"type": "nvarchar"
+			},
+			{
+				"name": "d_print_exp_dt",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "n_eff_pur_rate",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_shift",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_remark2",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_points",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "t_ltime",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "n_req_qty",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_allow_points",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_qty1",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_card_reverse_dis",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_dc_br_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_dc_year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_dc_prefix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_dc_srno",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_dc_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_remind_days",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_claim",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_order_br_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_order_year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_order_prefix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_order_no",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_order_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_claim_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "d_print_mfg_dt",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "c_ord_br_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_ord_year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_ord_prefix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_ord_srno",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_ord_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_cont_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_verified_qty",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_claim_qty",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_claim_val",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_coupon_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_coupon_srno",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_store_track",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_claim_reason",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_barcode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_sman_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_godown_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_stk_serial",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_bom_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_bom_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_item_tax_suffer",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_item_vatts_flag",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_item_vatts_mrp",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_item_tax_on_sch_qty",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_tray_Code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_marketplace_flag",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_quot_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_ts_value",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_pick_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_share_disc",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_ord_rate",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_ord_rate_diff",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_integration_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_update_stock",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_adjust",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_currency",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_exchange_rate",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_gst_enabled",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_from_gst_type",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_hsn_sac_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_cgst_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_cgst_amt",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_sgst_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_sgst_amt",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_igst_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_igst_amt",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_cess_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_cess_amt",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_pk",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_to_gst_type",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_gst_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_taxable_amt",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_inv_qty",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_ref_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_ord_pk",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_dc_pk",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_purord_pk",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_std_disc_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_total_discount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_hold_flag",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_print_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_eb_seq",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "c_eb_tray_Code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_eb_doc_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "c_supp_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "n_eb_load",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_add_cess_per",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_add_cess_rev_excl",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "n_cogs_amt",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "upsert_key",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "inv_det_temp"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

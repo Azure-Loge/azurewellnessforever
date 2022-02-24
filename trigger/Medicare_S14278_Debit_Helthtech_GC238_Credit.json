@@ -1,0 +1,24 @@
+{
+	"name": "Medicare_S14278_Debit_Helthtech_GC238_Credit",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Medicare_S14278_Debit_Helthtech_GC238_Credit",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-01-12T10:00:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

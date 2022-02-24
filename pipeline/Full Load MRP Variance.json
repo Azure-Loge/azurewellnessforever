@@ -1,0 +1,152 @@
+{
+	"name": "Full Load MRP Variance",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data MRP Variance to File",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Delete MRP Variance  File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SybaseSource",
+						"query": "select \nstock.c_br_code,\nstock_mst.c_item_code,\nstock_mst.c_batch_no,\nstock_mst.c_item_code + '|' + stock_mst.c_batch_no  as \"Item_Batch\",\nstock_mst.d_exp_dt,\nstock_mst.n_mrp,\nstock_mst.n_mrp_box,\nstock_mst.n_qty_per_box,\nstock_mst.d_ldate,\nstock_mst.d_adate,\nstock_mst.c_createuser,\nitem_mst.n_mrp_box as \"Base_Mrp\",\nmin(stock_mst.n_mrp_box) as \"Min_Mrp\",\nmax(stock_mst.n_mrp_box) as \"Max_Mrp\",\nitem_mst.n_lock as \"Permanent_Lock\",\nitem_mst.n_lock_po as \"Lock_Po\",\nsum(stock.n_bal_qty/item_mst.n_qty_per_box) as \"Stock_Qty\",\n((stock.n_bal_qty/item_mst.n_qty_per_box)*(stock_mst.n_eff_pur_rate*item_mst.n_qty_per_box)) as \"Stock_Value\",\nt.n_mrp_box as 'Mode_Mrp'\n\nfrom dba.stock_mst inner join dba.stock on stock_mst.c_item_code = stock.c_item_code\nand stock_mst.c_batch_no = stock.c_batch_no\ninner join dba.item_mst on stock_mst.c_item_code = item_mst.c_code\n\n inner join\n(Select * from\n(select n_mrp_box, count(*) as cnt,c_item_code,\n             row_number() over (partition by c_item_code order by count(*) desc) as seqnum\n      from dba.stock_mst t\n      group by n_mrp_box,c_item_code) mode_mrp where seqnum=1) t \n\t  on t.c_item_code=stock_mst.c_item_code \n \n\nwhere stock.n_bal_qty <> 0\n\ngroup by\nstock.c_br_code,\nstock_mst.c_item_code,\nstock_mst.c_batch_no,\nstock_mst.c_item_code + '|' + stock_mst.c_batch_no,\nstock_mst.d_exp_dt,\nstock_mst.n_mrp,\nstock_mst.n_mrp_box,\nstock_mst.n_qty_per_box,\nstock_mst.d_ldate,\nstock_mst.d_adate,\nstock_mst.c_createuser,\nitem_mst.n_lock,item_mst.n_mrp_box,stock_mst.n_eff_pur_rate,\nitem_mst.n_qty_per_box,\nstock.n_bal_qty,\nitem_mst.n_lock_po,\nt.n_mrp_box;"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ds_Ecogreenv2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "MRP_Variance_OutputFile",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data MRP Variance File to table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data MRP Variance to File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table MRP_Variance_Final",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": true,
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "MRP_Variance_OutputFile",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SQL_MRP_Variance",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Delete MRP Variance  File",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "MRP_Variance_OutputFile",
+						"type": "DatasetReference"
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "ECO Green"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-02-18T08:31:04Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

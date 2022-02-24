@@ -1,0 +1,17 @@
+{
+	"name": "dbnt_det_OutPutFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dbnt_det"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

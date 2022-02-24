@@ -1,0 +1,580 @@
+{
+	"name": "Upsert Incremental For inv Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Max Date from inv Master",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "SP truncate staging and temp table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "declare @temp as table\n(\ndates nvarchar(100)\n)\n\nDeclare \n@i int,@array varchar(200),\n@maxdate varchar(100),@days int, \n@syncdate nvarchar(100),@nextdate nvarchar(100)\n\nset @maxdate = (Select dateadd(day,1,convert(date,max(d_date))) as maxdate from inv_Master)\nset @days  = datediff(day, convert(date, @maxdate), convert(date, getdate()))\nset @i = 1\nset @syncdate= @maxdate + 'Sync'\n\ninsert into @temp\nselect @maxdate\ninsert into @temp\nselect @syncdate\n\nwhile @i <= @days-1\nBegin\n\nset @nextdate = convert(varchar,convert(date, dateadd(day, @i, @maxdate)))\nset @syncdate=  concat(convert(varchar,convert(date, dateadd(day, @i, @maxdate))) , 'Sync')\n\ninsert into @temp\nselect @nextdate\ninsert into @temp\nselect @syncdate\n\nset @i = @i + 1\n\nend\n\n\nselect * from @temp",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OMSSqlServerTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "inv det and inv mst pull into temp table",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Max Date from inv Master",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Max Date from inv Master').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy Data Inv Det",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "sales/@{item()}/inv_det"
+								},
+								{
+									"name": "Destination",
+									"value": "dbo.inv_det_temp"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"tableOption": "autoCreate"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "InvDetInputFile",
+									"type": "DatasetReference",
+									"parameters": {
+										"FolderName": {
+											"value": "@item().dates",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "inv_det_tempOutputTable",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Copy data Inv Mst",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "sales/FullLoad/inv_mst"
+								},
+								{
+									"name": "Destination",
+									"value": "dbo.inv_mst_temp"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"tableOption": "autoCreate"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "InvMstInputFile",
+									"type": "DatasetReference",
+									"parameters": {
+										"FolderName": {
+											"value": "@item().dates",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "inv_mst_tempOutputTable",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "SP update upsert key column",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "inv det and inv mst pull into temp table",
+						"dependencyConditions": [
+							"Succeeded",
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_Incremnetal_Load_Update_coumn_upsert_key]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SP copy data temp to staging inv mst",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "SP update upsert key column",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_Upsert_logic_inv_mst]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SP copy data temp to staging inv det",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "SP update upsert key column",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_Upsert_logic_inv_det]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SP truncate staging and temp table",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_Incremental_Load_inv_truncate_temp_tables]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Copy data invoice master",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "SP copy data temp to staging inv mst",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SP copy data temp to staging inv det",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "select c_br_code, c_order_id, d_date, c_item_code, [Net Sales]\n,concat(c_br_code,'/', c_order_id, '/', c_item_code) as brcode_orderid_itemcode_key \n,Cost_value,\nconvert(decimal(18,2),([Net Sales]- Cost_value)) as Margin_value,\nconverT(decimal(18,2),(Spl_Disc_Amt + Disc_Amt)) as Tot_Disc_Amt,\ngetDate() as Load_DateTime\nfrom\n(select c_br_code, c_order_id, d_date,\n\tcase when c_item_code = 'COD' then null\n\t\t\telse c_item_code end as c_item_code\n\t\t\t, [Net Sales],Cost_value,Spl_Disc_Amt,Disc_Amt,Load_DateTime    from\n(select\tinv_mst_staging.c_br_code,\n\t\tinv_mst_staging.c_order_id,\n\t\tinv_mst_staging.d_date,\n\t\tinv_det_staging.c_item_code,\n\t\tsum(inv_det_staging.n_taxable_amt) as \"Net Sales\",\n\t\tconvert(decimal(18,2),((n_qty + n_qty1)* n_eff_pur_rate)) as Cost_value,\n\n\t\tcase when inv_det_staging.n_gst_enabled=1 then ((n_mrp *n_qty) -(n_sale_rate*n_qty))\n\t\t\t when ((n_mrp *n_qty) -(n_sale_rate*n_qty)) < 1 then 0 else ((n_mrp *n_qty) -(n_sale_rate*n_qty)) end as Spl_Disc_Amt,\n\n\t\tisnull((n_sale_rate*(n_qty + n_qty1)) * (case when n_non_taxable_ret =0 then 0 else n_disc_rs /n_non_taxable_ret end),0) + convert(decimal(18,2),((n_sale_rate*(n_qty + n_qty1))*n_disc_per/100)) as Disc_Amt,\n\t\tgetDate() as Load_DateTime\n\t\t\nfrom\t\tdbo.inv_det_staging\ninner join \n\t\t\tdbo.inv_mst_staging\n\t\t\ton \n\t\t\tdbo.inv_det_staging.c_br_code = inv_mst_staging.c_br_code\n\tand inv_det_staging.c_prefix = inv_mst_staging.c_prefix\n\tand inv_det_staging.c_year = inv_mst_staging.c_year\n\tand inv_det_staging.n_srno = inv_mst_staging.n_srno\nwhere inv_mst_staging.c_patient IS NOT NULL and  inv_mst_staging.c_cust_code = 'GC93' or inv_mst_staging.c_cust_code = 'GC793' or inv_mst_staging.c_cust_code = '751' and inv_det_staging.n_cancel_flag = 0 \ngroup by inv_mst_staging.c_br_code, \n        inv_mst_staging.c_order_id,\n\t\tinv_mst_staging.d_date,\n\t\t inv_det_staging.c_item_code,\n\t\t n_qty,n_qty1,n_eff_pur_rate,\n\t\t inv_det_staging.n_gst_enabled,n_mrp,n_sale_rate,n_non_taxable_ret,n_disc_rs,n_disc_per) a) b\n",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "c_br_code",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "c_br_code",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "c_order_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "c_order_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "d_date",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "d_date",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							},
+							{
+								"source": {
+									"name": "c_item_code",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "c_item_code",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Net Sales",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "Net Sales",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "brcode_orderid_itemcode_key",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "brcode_orderid_itemcode_key",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Cost_value",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								},
+								"sink": {
+									"name": "Cost_value",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "Margin_value",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								},
+								"sink": {
+									"name": "Margin_value",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "Tot_Disc_Amt",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								},
+								"sink": {
+									"name": "Tot_Disc_Amt",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "InvDetandInvMstInputTable",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Inv_Master",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data Inv_Mst_Staging to Inv_Mst",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data invoice master",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "InvMstOutputTable",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "InvMstTable",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data Inv_Det_Staging to Inv_Det",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data invoice master",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "InvDetOutputTable",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "InvDetTable",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"variables": {
+			"Folders": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "Invoice"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-02-23T11:49:43Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

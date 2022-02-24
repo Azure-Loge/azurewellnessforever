@@ -1,0 +1,17 @@
+{
+	"name": "stock_godown_OutputTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "stock_godown"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

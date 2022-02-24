@@ -1,0 +1,150 @@
+{
+	"name": "Full Load HelthTech Purchase 751 Credit",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data HelthTech Purchase 751 Credit",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Delete File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SybaseSource",
+						"query": "SELECT c_br_code,c_year,c_prefix,n_srno,d_date,n_subtotal,n_total,d_ldate,c_order_id,n_taxable_amt FROM dba.pur_mst where c_br_code = '751' and n_cancel_flag=0 and\n n_post = 1 and c_prefix in('K','KO') and convert(date,d_date) > '2021-10-01'"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ds_Ecogreenv2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "RL_HelthTech_Purchase_751_Credit",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data HelthTech 751 File to Table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data HelthTech Purchase 751 Credit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table HelthTech_Purchase_751_Credit_Staging;",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "RL_HelthTech_Purchase_751_Credit",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SQL_HelthTech_Purchase_751_Credit",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Delete File",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "RL_HelthTech_Purchase_751_Credit",
+						"type": "DatasetReference"
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Reconciliation Ledgers"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-02-11T04:02:48Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

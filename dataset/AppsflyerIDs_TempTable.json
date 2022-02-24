@@ -1,0 +1,17 @@
+{
+	"name": "AppsflyerIDs_TempTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "temp_appsflyerIDs"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "OMS_CancelOrder_Outputtable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "OMS_Cancel_Order_Details"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

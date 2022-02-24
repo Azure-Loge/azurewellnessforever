@@ -1,0 +1,17 @@
+{
+	"name": "SQL_HelthTech_JO_JV_751_701_Credit",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "HelthTech_JO_JV_751_701_Credit_Staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

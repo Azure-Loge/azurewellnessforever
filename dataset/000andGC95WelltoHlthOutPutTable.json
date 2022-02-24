@@ -1,0 +1,17 @@
+{
+	"name": "000andGC95WelltoHlthOutPutTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "000andGC95WelltoHlth"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

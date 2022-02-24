@@ -1,0 +1,17 @@
+{
+	"name": "dbtn_mst_OutputTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Data360MSSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dbnt_mst"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

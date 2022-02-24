@@ -1,0 +1,33 @@
+{
+	"name": "Load aggr_dailysales",
+	"properties": {
+		"activities": [
+			{
+				"name": "SP for aggr_dailysales to aggr_dailysales_master table",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_aggr_dailysales_Master_Data]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "Expiry Analysis"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-09-22T05:02:01Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
