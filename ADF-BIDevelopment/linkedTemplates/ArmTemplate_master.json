@@ -1,0 +1,361 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-BIDevelopment"
+		},
+		"AzureBlobStorage_LS1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_LS1'"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"AzureDatabricks_Logesys_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks_Logesys'"
+		},
+		"Data360MSSQL_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Data360MSSQL'"
+		},
+		"OMSMySql1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'OMSMySql1'"
+		},
+		"wellness_cold_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'wellness_cold'"
+		},
+		"AzureBlobStorage_LS_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "wfbidevelopment-secret"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://wfbidevelopment.dfs.core.windows.net/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://wfbidevelopment-kv.vault.azure.net/"
+		},
+		"AzureKeyVault_LS_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://wfbidevelopment-kv.vault.azure.net/"
+		},
+		"EG21_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "192.168.0.10:49021"
+		},
+		"EG21_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "04M00021"
+		},
+		"EG21_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "dba"
+		},
+		"SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/SybaseIRMaster"
+		},
+		"Wellness-IntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		},
+		"selfHost-Wellness_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDatabricks_Logesys_accessToken": {
+						"value": "[parameters('AzureDatabricks_Logesys_accessToken')]"
+					},
+					"wellness_cold_connectionString": {
+						"value": "[parameters('wellness_cold_connectionString')]"
+					},
+					"AzureBlobStorage_LS1_connectionString": {
+						"value": "[parameters('AzureBlobStorage_LS1_connectionString')]"
+					},
+					"AzureDataLakeStorage1_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					},
+					"Data360MSSQL_connectionString": {
+						"value": "[parameters('Data360MSSQL_connectionString')]"
+					},
+					"OMSMySql1_connectionString": {
+						"value": "[parameters('OMSMySql1_connectionString')]"
+					},
+					"AzureKeyVault1_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"AzureKeyVault_LS_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_LS_properties_typeProperties_baseUrl')]"
+					},
+					"SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"Wellness-IntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('Wellness-IntegrationRuntime_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"selfHost-Wellness_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('selfHost-Wellness_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"AzureBlobStorage_LS_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('AzureBlobStorage_LS_properties_typeProperties_connectionString_secretName')]"
+					},
+					"AzureDataLakeStorage1_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"EG21_properties_typeProperties_server": {
+						"value": "[parameters('EG21_properties_typeProperties_server')]"
+					},
+					"EG21_properties_typeProperties_database": {
+						"value": "[parameters('EG21_properties_typeProperties_database')]"
+					},
+					"EG21_properties_typeProperties_username": {
+						"value": "[parameters('EG21_properties_typeProperties_username')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_4')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_6",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_6.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_5')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_7",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_7.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_6')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_8",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_8.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_7')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_9",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_9.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_8')]"
+			]
+		},
+		{
+			"name": "ADF-BIDevelopment_ArmTemplate_10",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_10.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-BIDevelopment_ArmTemplate_9')]"
+			]
+		}
+	]
+}

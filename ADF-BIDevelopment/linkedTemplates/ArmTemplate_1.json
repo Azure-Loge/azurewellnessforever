@@ -1,0 +1,945 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-BIDevelopment"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AppFlyerDataConversionMySqlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "OMSMySql1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "MySqlTable",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "`appsflyer_data_conversion`"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AppsFlyerConnectionDataSqlServerTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "appflyers_data_conversion_staging"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AppsflyerIDs_TempTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "temp_appsflyerIDs"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/B2BWelltoHlthOutputTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "B2CWelltoHlth"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/B2CWelltoHlthInputFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "B2CWelltoHlth",
+						"folderPath": "FullLoad",
+						"container": "ecogreen"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "c_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_tran_no",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_act_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "d_date",
+						"type": "INT96"
+					},
+					{
+						"name": "n_amount",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_opp_act_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ref_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ref_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "d_chq_date",
+						"type": "INT96"
+					},
+					{
+						"name": "c_remark",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_act_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_opp_act_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_add_1",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_add_2",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_add_3",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_city",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ref_srno",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_order_no",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "recon_dt",
+						"type": "INT96"
+					},
+					{
+						"name": "chq_pass",
+						"type": "INT32"
+					},
+					{
+						"name": "multi_act_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "Debit",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "credit",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CRMCustomerExcelFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "excl_bzn_customers.csv",
+						"container": "crm"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CRMCustomerInputFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "excl_bzn_customers",
+						"folderPath": "extratablesfull1/CRM_extratables",
+						"container": "summary"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "customer_id",
+						"type": "INT32"
+					},
+					{
+						"name": "active_status",
+						"type": "UTF8"
+					},
+					{
+						"name": "first_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "last_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "gender",
+						"type": "UTF8"
+					},
+					{
+						"name": "mobile",
+						"type": "UTF8"
+					},
+					{
+						"name": "dnd_status",
+						"type": "UTF8"
+					},
+					{
+						"name": "date_whitelisted",
+						"type": "INT96"
+					},
+					{
+						"name": "blacklist",
+						"type": "INT32"
+					},
+					{
+						"name": "email",
+						"type": "UTF8"
+					},
+					{
+						"name": "dob",
+						"type": "INT96"
+					},
+					{
+						"name": "date_aniversary",
+						"type": "INT96"
+					},
+					{
+						"name": "creating_business_id",
+						"type": "INT32"
+					},
+					{
+						"name": "customer_source",
+						"type": "UTF8"
+					},
+					{
+						"name": "address",
+						"type": "UTF8"
+					},
+					{
+						"name": "city",
+						"type": "UTF8"
+					},
+					{
+						"name": "state",
+						"type": "UTF8"
+					},
+					{
+						"name": "zipcode",
+						"type": "UTF8"
+					},
+					{
+						"name": "date_email_verified",
+						"type": "INT96"
+					},
+					{
+						"name": "email_verified",
+						"type": "UTF8"
+					},
+					{
+						"name": "date_created",
+						"type": "INT96"
+					},
+					{
+						"name": "date_updated",
+						"type": "INT96"
+					},
+					{
+						"name": "created_by",
+						"type": "UTF8"
+					},
+					{
+						"name": "updated_by",
+						"type": "UTF8"
+					},
+					{
+						"name": "facebookId",
+						"type": "UTF8"
+					},
+					{
+						"name": "pointsEarned",
+						"type": "INT32"
+					},
+					{
+						"name": "pointsRedeemed",
+						"type": "INT32"
+					},
+					{
+						"name": "image",
+						"type": "UTF8"
+					},
+					{
+						"name": "role_id",
+						"type": "INT32"
+					},
+					{
+						"name": "password",
+						"type": "UTF8"
+					},
+					{
+						"name": "facebook_id",
+						"type": "UTF8"
+					},
+					{
+						"name": "date_last_login",
+						"type": "INT96"
+					},
+					{
+						"name": "account_type",
+						"type": "UTF8"
+					},
+					{
+						"name": "registration_ip",
+						"type": "UTF8"
+					},
+					{
+						"name": "comments",
+						"type": "UTF8"
+					},
+					{
+						"name": "password_sent",
+						"type": "UTF8"
+					},
+					{
+						"name": "date_deactivated",
+						"type": "INT96"
+					},
+					{
+						"name": "gstn_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "pan_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "latitude",
+						"type": "UTF8"
+					},
+					{
+						"name": "longitude",
+						"type": "UTF8"
+					},
+					{
+						"name": "blocked_date",
+						"type": "INT96"
+					},
+					{
+						"name": "lotalty_tier",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CRMCustomerOutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "excl_bzn_customers"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ChannelMaster_OutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "channel_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "channel_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "channel",
+						"type": "nvarchar"
+					},
+					{
+						"name": "api_key",
+						"type": "nvarchar"
+					},
+					{
+						"name": "cart_discount_channel",
+						"type": "nvarchar"
+					},
+					{
+						"name": "discount",
+						"type": "nvarchar"
+					},
+					{
+						"name": "channel_status",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "OMS_Channel_Master"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Ds_Ecogreenv2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EG21",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SybaseTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EAStockInputFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "stock",
+						"folderPath": "FullLoad",
+						"container": "inventory"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "c_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_item_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_batch_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_bal_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_sch_bal_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_ref_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ref_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ref_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ref_srno",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_dc_inv_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_dc_pur_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_hold_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "d_ldate",
+						"type": "INT96"
+					},
+					{
+						"name": "t_ltime",
+						"type": "INT96"
+					},
+					{
+						"name": "c_grn_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_grn_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_grn_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_grn_srno",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_store_track_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EAStockOutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Ex_Stock_Staging_temp"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EAStock_InputFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FolderName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "stock",
+						"folderPath": {
+							"value": "@dataset().FolderName",
+							"type": "Expression"
+						},
+						"container": "inventory"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "c_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_item_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_batch_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_bal_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_sch_bal_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_ref_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ref_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ref_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ref_srno",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_dc_inv_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_dc_pur_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_hold_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "d_ldate",
+						"type": "INT96"
+					},
+					{
+						"name": "t_ltime",
+						"type": "INT96"
+					},
+					{
+						"name": "c_grn_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_grn_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_grn_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_grn_srno",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_store_track_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EAStock_MstOutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Ex_Stock_Mst_Staging"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EGImageOutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Eco_Green_Image"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EG_Inv_Det_OutPutFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "EG_Inv_Det",
+						"container": "ecogreensale"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EG_Inv_Det_OutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "EG_Inv_Det1"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EG_Inv_Mst_OutPutFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "EG_Inv_Mst",
+						"container": "ecogreensale"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EG_Order_Det_OutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "EG_Order_Det"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EG_Order_det_OutPutFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "EG_Order_Det",
+						"folderPath": "FullLoad",
+						"container": "ecogreen"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		}
+	]
+}

@@ -1,0 +1,60 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADF-BIDevelopment"
+		},
+		"AzureBlobStorage_LS1_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureDatabricks_Logesys_accessToken": {
+			"value": ""
+		},
+		"Data360MSSQL_connectionString": {
+			"value": ""
+		},
+		"OMSMySql1_connectionString": {
+			"value": ""
+		},
+		"wellness_cold_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorage_LS_properties_typeProperties_connectionString_secretName": {
+			"value": "wfbidevelopment-secret"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://wfbidevelopment.dfs.core.windows.net/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://wfbidevelopment-kv.vault.azure.net/"
+		},
+		"AzureKeyVault_LS_properties_typeProperties_baseUrl": {
+			"value": "https://wfbidevelopment-kv.vault.azure.net/"
+		},
+		"EG21_properties_typeProperties_server": {
+			"value": "192.168.0.10:49021"
+		},
+		"EG21_properties_typeProperties_database": {
+			"value": "04M00021"
+		},
+		"EG21_properties_typeProperties_username": {
+			"value": "dba"
+		},
+		"SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/SybaseIRMaster"
+		},
+		"Wellness-IntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		},
+		"selfHost-Wellness_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		}
+	}
+}

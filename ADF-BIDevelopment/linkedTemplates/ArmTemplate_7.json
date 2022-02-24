@@ -1,0 +1,4925 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-BIDevelopment"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load HelthTech GC238 Credit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data HelthTech GC238 Credit",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Delete File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "Select ( cogs.c_br_code ) as c_br_code,\n\t\t( cogs.c_year ) as c_year,   \n\t\t( cogs.c_prefix ) as c_prefix,   \n\t\t( cogs.n_tran_no ) as n_tran_no,   \n\t\t( cogs.c_act_code ) as c_act_code,   \n\t\t( cogs.d_date ) as d_date,   \n\t\tSUM( cogs.n_amount ) as n_amount,   \n\t\t( cogs.c_opp_act_code ) as c_opp_act_code,   \n\t\t( cogs.c_ref_br_code ) as c_ref_br_code,\n\t\t( cogs.c_ref_no ) as c_ref_no,   \n\t\t( cogs.d_chq_date) as d_chq_date,   \n\t\t( cogs.c_remark ) as c_remark,   \n\t\t( cogs.c_act_name ) as c_act_name,   \n\t\t( cogs.c_opp_act_name ) as c_opp_act_name,\n\t\t( cogs.c_add_1 ) as c_add_1,\n\t\t( cogs.c_add_2 ) as c_add_2, \n\t\t( cogs.c_add_3 ) as c_add_3,\n\t\t( cogs.c_city ) as c_city,\n\t\t( cogs.n_ref_srno ) as n_ref_srno,\n\t\t( cogs.n_order_no ) as n_order_no,\n\t\t( cogs.recon_dt) as recon_dt,\n\t\t( if recon_dt is null then 0 else 1 endif ) as chq_pass,\n\t\t( cogs.multi_act_name) as multi_act_name,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\nFrom\n(\n\tSELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC238' ) and \n         ( ledger.c_act_code <= 'GC238' )   and\n\t\t\t( ledger.n_amount <> 0) )\n\tUnion All\n\t SELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM cogs_ledger as ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC238' ) and \n         ( ledger.c_act_code <= 'GC238' )   and\n\t\t\t( ledger.n_amount <> 0) ) --and :li_cogs =1\n) as cogs\nGroup By c_br_code,c_year,c_prefix,n_tran_no,c_act_code,d_date,c_opp_act_code,c_ref_br_code,c_ref_no,   \n\t\td_chq_date,c_remark,c_act_name,c_opp_act_name,c_add_1,c_add_2,c_add_3,c_city,n_ref_srno,\n\t\tn_order_no,recon_dt,multi_act_name\nUNION   ALL\n  SELECT ('') as c_br_code,\n\t\t\t('00') as c_year,   \n         ('OP') as c_prefix,   \n         ( 0 ) as c_tran_no,   \n         ( ledger.c_act_code ) as c_act_code,   \n         ( date('2021-10-21')) as d_date,   \n         sum(ledger.n_amount) as n_amount,   \n         ( '' ) as c_opp_act_code,   \n         ( '' ) as c_ref_br_code,   \n         ( '' ) as c_ref_no,   \n         date('2021-10-21') as d_chq_date,   \n         ( '' ) as c_remark,   \n         ( act_mst.c_name ) as c_act_name,   \n         ( 'Opening Balance' ) as c_opp_act_name,\n\t\t\t( act_mst.c_add_1 )  as c_add_1,\n\t\t\t( act_mst.c_add_2 )  as c_add_2, \n\t\t\t( act_mst.c_add_3 )  as c_add_3,\n\t\t\t( act_mst.c_city ) as c_city,\n\t\t\t(0) as n_ref_srno,\n\t\t\t(0) as n_order_no,\n\t\t\t( null )  as recon_dt,\n\t\t\t( 0 )  \tas chq_pass,\n\t\t\t( '' ) as multi_act_name\t,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\n    FROM dba.ledger\n\t\t\t\tinner join (select c_br_code as brcode from dba.branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from dba.act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code,  \n         act_mst  \n   WHERE ( act_mst.c_code = ledger.c_act_code ) and  \n         ( ( ledger.d_date <= getDate() ) and\t\n         ( ledger.c_act_code >= 'GC238' ) and\t\n         ( ledger.c_act_code <= 'GC238' ) )   \nGROUP BY c_act_code,c_act_name,c_add_1,c_add_2,c_add_3,c_city"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "RL_HelthTech_GC238_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data HelthTech GC238 File to Table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data HelthTech GC238 Credit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table HelthTech_GC238_Credit_Staging",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RL_HelthTech_GC238_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_HelthTech_GC238_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Delete File",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "RL_HelthTech_GC238_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Reconciliation Ledgers"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-01-05T10:19:51Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load HelthTech JO-JV 751 and 701 Credit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data HelthTech JO-JV 751 and 701 Credit",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "Select ( cogs.c_br_code ) as c_br_code,\n\t\t( cogs.c_year ) as c_year,   \n\t\t( cogs.c_prefix ) as c_prefix,   \n\t\t( cogs.n_tran_no ) as n_tran_no,   \n\t\t( cogs.c_act_code ) as c_act_code,   \n\t\t( cogs.d_date ) as d_date,   \n\t\tSUM( cogs.n_amount ) as n_amount,   \n\t\t( cogs.c_opp_act_code ) as c_opp_act_code,   \n\t\t( cogs.c_ref_br_code ) as c_ref_br_code,\n\t\t( cogs.c_ref_no ) as c_ref_no,   \n\t\t( cogs.d_chq_date) as d_chq_date,   \n\t\t( cogs.c_remark ) as c_remark,   \n\t\t( cogs.c_act_name ) as c_act_name,   \n\t\t( cogs.c_opp_act_name ) as c_opp_act_name,\n\t\t( cogs.c_add_1 ) as c_add_1,\n\t\t( cogs.c_add_2 ) as c_add_2, \n\t\t( cogs.c_add_3 ) as c_add_3,\n\t\t( cogs.c_city ) as c_city,\n\t\t( cogs.n_ref_srno ) as n_ref_srno,\n\t\t( cogs.n_order_no ) as n_order_no,\n\t\t( cogs.recon_dt) as recon_dt,\n\t\t( if recon_dt is null then 0 else 1 endif ) as chq_pass,\n\t\t( cogs.multi_act_name) as multi_act_name,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\nFrom\n(\n\tSELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('701') = 6 and c_code = '701' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('701')<> 6 and c_code >= (if '701' = 'zzz' then '701' else '701' endif ) and ( c_code <= '701' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC793' ) and \n         ( ledger.c_act_code <= 'GC793' )   and\n\t\t\t( ledger.n_amount <> 0) )\n\tUnion All\n\t SELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM cogs_ledger as ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('701') = 6 and c_code = '701' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('701')<> 6 and c_code >= (if '701' = 'zzz' then '701' else '701' endif ) and ( c_code <= '701' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC793' ) and \n         ( ledger.c_act_code <= 'GC793' )   and\n\t\t\t( ledger.n_amount <> 0) ) --and :li_cogs =1\n) as cogs \nGroup By c_br_code,c_year,c_prefix,n_tran_no,c_act_code,d_date,c_opp_act_code,c_ref_br_code,c_ref_no,   \n\t\td_chq_date,c_remark,c_act_name,c_opp_act_name,c_add_1,c_add_2,c_add_3,c_city,n_ref_srno,\n\t\tn_order_no,recon_dt,multi_act_name\nUNION   ALL\n  SELECT ('') as c_br_code,\n\t\t\t('00') as c_year,   \n         ('OP') as c_prefix,   \n         ( 0 ) as c_tran_no,   \n         ( ledger.c_act_code ) as c_act_code,   \n         ( date('2021-10-21')) as d_date,   \n         sum(ledger.n_amount) as n_amount,   \n         ( '' ) as c_opp_act_code,   \n         ( '' ) as c_ref_br_code,   \n         ( '' ) as c_ref_no,   \n         date('2021-10-21') as d_chq_date,   \n         ( '' ) as c_remark,   \n         ( act_mst.c_name ) as c_act_name,   \n         ( 'Opening Balance' ) as c_opp_act_name,\n\t\t\t( act_mst.c_add_1 )  as c_add_1,\n\t\t\t( act_mst.c_add_2 )  as c_add_2, \n\t\t\t( act_mst.c_add_3 )  as c_add_3,\n\t\t\t( act_mst.c_city ) as c_city,\n\t\t\t(0) as n_ref_srno,\n\t\t\t(0) as n_order_no,\n\t\t\t( null )  as recon_dt,\n\t\t\t( 0 )  \tas chq_pass,\n\t\t\t( '' ) as multi_act_name\t,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\n    FROM dba.ledger\n\t\t\t\tinner join (select c_br_code as brcode from dba.branch_group_det where length('701') = 6 and c_code = '701' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from dba.act_mst where length('701')<> 6 and c_code >= (if '701' = 'zzz' then '701' else '701' endif ) and ( c_code <= '701' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code,  \n         act_mst  \n   WHERE ( act_mst.c_code = ledger.c_act_code ) and  \n         ( ( ledger.d_date <= getDate() ) and\t\n         ( ledger.c_act_code >= 'GC793' ) and\t\n         ( ledger.c_act_code <= 'GC793' ) )   \nGROUP BY c_act_code,c_act_name,c_add_1,c_add_2,c_add_3,c_city\n\n\nUNION\n\n\nSelect ( cogs.c_br_code ) as c_br_code,\n\t\t( cogs.c_year ) as c_year,   \n\t\t( cogs.c_prefix ) as c_prefix,   \n\t\t( cogs.n_tran_no ) as n_tran_no,   \n\t\t( cogs.c_act_code ) as c_act_code,   \n\t\t( cogs.d_date ) as d_date,   \n\t\tSUM( cogs.n_amount ) as n_amount,   \n\t\t( cogs.c_opp_act_code ) as c_opp_act_code,   \n\t\t( cogs.c_ref_br_code ) as c_ref_br_code,\n\t\t( cogs.c_ref_no ) as c_ref_no,   \n\t\t( cogs.d_chq_date) as d_chq_date,   \n\t\t( cogs.c_remark ) as c_remark,   \n\t\t( cogs.c_act_name ) as c_act_name,   \n\t\t( cogs.c_opp_act_name ) as c_opp_act_name,\n\t\t( cogs.c_add_1 ) as c_add_1,\n\t\t( cogs.c_add_2 ) as c_add_2, \n\t\t( cogs.c_add_3 ) as c_add_3,\n\t\t( cogs.c_city ) as c_city,\n\t\t( cogs.n_ref_srno ) as n_ref_srno,\n\t\t( cogs.n_order_no ) as n_order_no,\n\t\t( cogs.recon_dt) as recon_dt,\n\t\t( if recon_dt is null then 0 else 1 endif ) as chq_pass,\n\t\t( cogs.multi_act_name) as multi_act_name,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\nFrom\n(\n\tSELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC793' ) and \n         ( ledger.c_act_code <= 'GC793' )   and\n\t\t\t( ledger.n_amount <> 0) )\n\tUnion All\n\t SELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM cogs_ledger as ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC793' ) and \n         ( ledger.c_act_code <= 'GC793' )   and\n\t\t\t( ledger.n_amount <> 0) ) --and :li_cogs =1\n) as cogs \nGroup By c_br_code,c_year,c_prefix,n_tran_no,c_act_code,d_date,c_opp_act_code,c_ref_br_code,c_ref_no,   \n\t\td_chq_date,c_remark,c_act_name,c_opp_act_name,c_add_1,c_add_2,c_add_3,c_city,n_ref_srno,\n\t\tn_order_no,recon_dt,multi_act_name\nUNION   ALL\n  SELECT ('') as c_br_code,\n\t\t\t('00') as c_year,   \n         ('OP') as c_prefix,   \n         ( 0 ) as c_tran_no,   \n         ( ledger.c_act_code ) as c_act_code,   \n         ( date('2021-10-21')) as d_date,   \n         sum(ledger.n_amount) as n_amount,   \n         ( '' ) as c_opp_act_code,   \n         ( '' ) as c_ref_br_code,   \n         ( '' ) as c_ref_no,   \n         date('2021-10-21') as d_chq_date,   \n         ( '' ) as c_remark,   \n         ( act_mst.c_name ) as c_act_name,   \n         ( 'Opening Balance' ) as c_opp_act_name,\n\t\t\t( act_mst.c_add_1 )  as c_add_1,\n\t\t\t( act_mst.c_add_2 )  as c_add_2, \n\t\t\t( act_mst.c_add_3 )  as c_add_3,\n\t\t\t( act_mst.c_city ) as c_city,\n\t\t\t(0) as n_ref_srno,\n\t\t\t(0) as n_order_no,\n\t\t\t( null )  as recon_dt,\n\t\t\t( 0 )  \tas chq_pass,\n\t\t\t( '' ) as multi_act_name\t,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\n    FROM dba.ledger\n\t\t\t\tinner join (select c_br_code as brcode from dba.branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from dba.act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code,  \n         act_mst  \n   WHERE ( act_mst.c_code = ledger.c_act_code ) and  \n         ( ( ledger.d_date <= getDate() ) and\t\n         ( ledger.c_act_code >= 'GC793' ) and\t\n         ( ledger.c_act_code <= 'GC793' ) )   \nGROUP BY c_act_code,c_act_name,c_add_1,c_add_2,c_add_3,c_city"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "RL_HelthTech_JO_JV_751_701_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data HelthTech JO-JV 751 and 701 File to Table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data HelthTech JO-JV 751 and 701 Credit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RL_HelthTech_JO_JV_751_701_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_HelthTech_JO_JV_751_701_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Reconciliation Ledgers"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-02-01T04:57:15Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load HelthTech Purchase 751 Credit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data HelthTech Purchase 751 Credit",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Delete File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "SELECT c_br_code,c_year,c_prefix,n_srno,d_date,n_subtotal,n_total,d_ldate,c_order_id,n_taxable_amt FROM dba.pur_mst where c_br_code = '751' and n_cancel_flag=0 and\n n_post = 1 and c_prefix in('K','KO') and convert(date,d_date) > '2021-10-01'"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "RL_HelthTech_Purchase_751_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data HelthTech 751 File to Table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data HelthTech Purchase 751 Credit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table HelthTech_Purchase_751_Credit_Staging;",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RL_HelthTech_Purchase_751_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_HelthTech_Purchase_751_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Delete File",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "RL_HelthTech_Purchase_751_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Reconciliation Ledgers"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-02-11T04:02:48Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load HelthTech Sale 751 and 701 Debit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data HelthTech Sale 751  and 701 to File",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "SELECT c_br_code,c_year,c_prefix,n_srno,d_date,c_cust_code,c_order_id,n_total FROM dba.inv_mst where c_br_code in ('751' ,'701') and c_cust_code = 'GC793' and convert(date,d_date) > '2021-10-01'"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "RL_HelthTech_Sale_751_701_Debit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy dataHelthTech Sale 751 and 701 Debit File to Table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data HelthTech Sale 751  and 701 to File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RL_HelthTech_Sale_751_701_Debit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_HelthTech_Sale_751_701_Debit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Reconciliation Ledgers"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-01-31T05:51:59Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load HelthTech Sale Return 751 and 701')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data HelthTech Sale Return 751 and 701 File",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "SELECT c_br_code,c_year,c_prefix,n_srno,d_date,c_cust_code,n_total,n_non_taxable_ret\n,c_order_id FROM dba.CRNT_MST where c_br_code in ('751','701') and c_cust_code = 'GC793' and convert(date,d_date) > '2021-10-01'"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "RL_HelthTech_Sale_Return_751_701_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data HelthTech Sale Return 751_701 File to Table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data HelthTech Sale Return 751 and 701 File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RL_HelthTech_Sale_Return_751_701_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_HelthTech_Sale_Return_751_701_Credit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Reconciliation Ledgers"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-02-01T05:01:49Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Helthtech Sale GC793 Debit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data HelthTech Sale GC793 Debit",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Delete File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "SELECT c_br_code,c_year,c_prefix,n_srno,d_date,c_cust_code,c_order_id,n_total FROM dba.inv_mst where c_br_code = '751' and c_cust_code = 'GC793' and convert(date,d_date) > '2021-10-01'"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "RL_HelthTech_Sale_GC793_Debit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data HelthTech Sale GC793 File to Table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data HelthTech Sale GC793 Debit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RL_HelthTech_Sale_GC793_Debit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_HelthTech_Sale_GC793_Debit",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Delete File",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "RL_HelthTech_Sale_GC793_Debit",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Reconciliation Ledgers"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-01-05T04:33:12Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Inv_Det_Staging')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data invDet File",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBatchTimeout": "18:00:00",
+								"preCopyScript": "truncate table inv_det_staging"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "c_br_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_br_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_year",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_year",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_prefix",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_prefix",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_srno",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_srno",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "d_date",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "d_date",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "c_item_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_item_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_batch_no",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_batch_no",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_qty",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_qty",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_sch_qty",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_sch_qty",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_sch_disc",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_sch_disc",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_sale_rate",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_sale_rate",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_disc_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_disc_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_st_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_st_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_cst_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_cst_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_rst_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_rst_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_tax_suffer",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_tax_suffer",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_amount",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_amount",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_mf_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_mf_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_2nd_sale",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_2nd_sale",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_sp_sale_flag",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_sp_sale_flag",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_cancel_flag",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_cancel_flag",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "d_ldate",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "d_ldate",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "n_vaton",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_vaton",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_tax_on_sch_qty",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_tax_on_sch_qty",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_vatts_mrp",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_vatts_mrp",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_mrp",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_mrp",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_remark",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_remark",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_tax_amt",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_tax_amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_free_tax_amt",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_free_tax_amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_print_batch",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_print_batch",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "d_print_exp_dt",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "d_print_exp_dt",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "n_eff_pur_rate",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_eff_pur_rate",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_shift",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_shift",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_remark2",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_remark2",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_points",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_points",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "t_ltime",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "t_ltime",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "n_req_qty",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_req_qty",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_allow_points",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_allow_points",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_qty1",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_qty1",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_card_reverse_dis",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_card_reverse_dis",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_dc_br_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_dc_br_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_dc_year",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_dc_year",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_dc_prefix",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_dc_prefix",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_dc_srno",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_dc_srno",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_dc_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_dc_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_remind_days",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_remind_days",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_claim",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_claim",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_order_br_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_order_br_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_order_year",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_order_year",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_order_prefix",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_order_prefix",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_order_no",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_order_no",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_order_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_order_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_claim_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_claim_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "d_print_mfg_dt",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "d_print_mfg_dt",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "c_ord_br_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_ord_br_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_ord_year",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_ord_year",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_ord_prefix",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_ord_prefix",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ord_srno",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ord_srno",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ord_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ord_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_cont_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_cont_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_verified_qty",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_verified_qty",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_claim_qty",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_claim_qty",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_claim_val",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_claim_val",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_coupon_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_coupon_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_coupon_srno",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_coupon_srno",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_store_track",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_store_track",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_claim_reason",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_claim_reason",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_barcode",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_barcode",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_sman_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_sman_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_godown_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_godown_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_stk_serial",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_stk_serial",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_bom_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_bom_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_bom_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_bom_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_item_tax_suffer",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_item_tax_suffer",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_item_vatts_flag",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_item_vatts_flag",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_item_vatts_mrp",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_item_vatts_mrp",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_item_tax_on_sch_qty",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_item_tax_on_sch_qty",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_tray_Code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_tray_Code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_marketplace_flag",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_marketplace_flag",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_quot_no",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_quot_no",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ts_value",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ts_value",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_pick_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_pick_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_share_disc",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_share_disc",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ord_rate",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ord_rate",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ord_rate_diff",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ord_rate_diff",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_integration_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_integration_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_update_stock",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_update_stock",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_adjust",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_adjust",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_currency",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_currency",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_exchange_rate",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_exchange_rate",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_gst_enabled",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_gst_enabled",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_from_gst_type",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_from_gst_type",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_hsn_sac_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_hsn_sac_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_cgst_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_cgst_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_cgst_amt",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_cgst_amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_sgst_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_sgst_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_sgst_amt",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_sgst_amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_igst_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_igst_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_igst_amt",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_igst_amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_cess_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_cess_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_cess_amt",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_cess_amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_pk",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_pk",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_to_gst_type",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_to_gst_type",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_gst_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_gst_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_taxable_amt",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_taxable_amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_inv_qty",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_inv_qty",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ref_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ref_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ord_pk",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ord_pk",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_dc_pk",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_dc_pk",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_purord_pk",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_purord_pk",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_std_disc_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_std_disc_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_total_discount",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_total_discount",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_hold_flag",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_hold_flag",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_print_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_print_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_eb_seq",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_eb_seq",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_eb_tray_Code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_eb_tray_Code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_eb_doc_no",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_eb_doc_no",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_supp_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_supp_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_eb_load",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_eb_load",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_add_cess_per",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_add_cess_per",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_add_cess_rev_excl",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_add_cess_rev_excl",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_cogs_amt",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_cogs_amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InvDetInputFile",
+								"type": "DatasetReference",
+								"parameters": {
+									"FolderName": "FullLoad"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "InvDetOutputTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Invoice"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-02-23T11:49:43Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Inv_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data invoice master",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "select c_br_code, c_order_id, d_date, c_item_code, [Net Sales]\n,concat(c_br_code,'/', c_order_id, '/', c_item_code) as brcode_orderid_itemcode_key \n,Cost_value,\nconvert(decimal(18,2),([Net Sales]- Cost_value)) as Margin_value,\nconverT(decimal(18,2),(Spl_Disc_Amt + Disc_Amt)) as Tot_Disc_Amt,\ngetDate() as Load_DateTime\nfrom\n(select c_br_code, c_order_id, d_date,\n\tcase when c_item_code = 'COD' then null\n\t\t\telse c_item_code end as c_item_code\n\t\t\t, [Net Sales],Cost_value,Spl_Disc_Amt,Disc_Amt,Load_DateTime    from\n(select\tinv_mst_staging.c_br_code,\n\t\tinv_mst_staging.c_order_id,\n\t\tinv_mst_staging.d_date,\n\t\tinv_det_staging.c_item_code,\n\t\tsum(inv_det_staging.n_taxable_amt) as \"Net Sales\",\n\t\tconvert(decimal(18,2),((n_qty + n_qty1)* n_eff_pur_rate)) as Cost_value,\n\n\t\tcase when inv_det_staging.n_gst_enabled=1 then ((n_mrp *n_qty) -(n_sale_rate*n_qty))\n\t\t\t when ((n_mrp *n_qty) -(n_sale_rate*n_qty)) < 1 then 0 else ((n_mrp *n_qty) -(n_sale_rate*n_qty)) end as Spl_Disc_Amt,\n\n\t\tisnull((n_sale_rate*(n_qty + n_qty1)) * (case when n_non_taxable_ret =0 then 0 else n_disc_rs /n_non_taxable_ret end),0) + convert(decimal(18,2),((n_sale_rate*(n_qty + n_qty1))*n_disc_per/100)) as Disc_Amt,\n\t\tgetDate() as Load_DateTime\n\t\t\nfrom\t\tdbo.inv_det_staging\ninner join \n\t\t\tdbo.inv_mst_staging\n\t\t\ton \n\t\t\tdbo.inv_det_staging.c_br_code = inv_mst_staging.c_br_code\n\tand inv_det_staging.c_prefix = inv_mst_staging.c_prefix\n\tand inv_det_staging.c_year = inv_mst_staging.c_year\n\tand inv_det_staging.n_srno = inv_mst_staging.n_srno\nwhere inv_mst_staging.c_patient IS NOT NULL and  inv_mst_staging.c_cust_code = 'GC93' or inv_mst_staging.c_cust_code = 'GC793' or inv_mst_staging.c_cust_code = '751' and inv_det_staging.n_cancel_flag = 0 \ngroup by inv_mst_staging.c_br_code, \n        inv_mst_staging.c_order_id,\n\t\tinv_mst_staging.d_date,\n\t\t inv_det_staging.c_item_code,\n\t\t n_qty,n_qty1,n_eff_pur_rate,\n\t\t inv_det_staging.n_gst_enabled,n_mrp,n_sale_rate,n_non_taxable_ret,n_disc_rs,n_disc_per) a) b\n",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBatchTimeout": "18:00:00",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "c_br_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "c_br_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_order_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "c_order_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "d_date",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										},
+										"sink": {
+											"name": "d_date",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "c_item_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "c_item_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Net Sales",
+											"type": "Double",
+											"physicalType": "float"
+										},
+										"sink": {
+											"name": "Net Sales",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "brcode_orderid_itemcode_key",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "brcode_orderid_itemcode_key",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Cost_value",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										},
+										"sink": {
+											"name": "Cost_value",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Margin_value",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										},
+										"sink": {
+											"name": "Margin_value",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Tot_Disc_Amt",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										},
+										"sink": {
+											"name": "Tot_Disc_Amt",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InvDetandInvMstInputTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Inv_Master",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data Inv_Mst_Staging to Inv_Mst",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data invoice master",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InvMstOutputTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "InvMstTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data Inv_Det_Staging to Inv_Det",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data invoice master",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InvDetOutputTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "InvDetTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Invoice"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-02-23T11:49:43Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Inv_Mst_Staging')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data from Inv Mst file to inv Mst staging Table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBatchTimeout": "18:00:00",
+								"preCopyScript": "truncate table inv_mst_staging"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InvMstInputFile",
+								"type": "DatasetReference",
+								"parameters": {
+									"FolderName": "FullLoad"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "InvMstOutputTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Invoice"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-02-23T11:49:43Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Item Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data Item Master",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data EG Get Item",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate TABLE  Eco_Green_Item_Master",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ecogreen_Itemmaster_OutputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ItemMasterOutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data EG Get Item",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Delete Item Master CSV File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "SELECT Item_mst.c_code AS Item_Code,\n       Item_mst.c_name AS Item_Name,\n       item_mst.d_adate as Created_date,\ncase when item_category_class_mst.c_code='ICL003' or item_category_class_mst.c_code='L1P001' or item_category_class_mst.c_code='L1P002' then 'PHARMA'\n\t when  item_category_class_mst.c_code='ICL004' then 'SURGICAL'\n\t when item_category_class_mst.c_code='ICL007' then 'CONSUMABLE'\n\t when item_category_class_mst.c_code='L1P005' then 'OPRS'\nelse 'FMCG' end  As Main_Category,\n     \n       item_category_mst.c_name AS category,\n       item_category_class_mst.c_name As Category_Class,\n       item_category_head_mst.c_name As Category_Head,\n     \n       item_group_mst.c_name AS Group_Name,\n     \n       Item_mst.n_lock_po AS Lock_PO,\n      Item_mst.n_lock AS n_lock\nFROM Item_mst\n     \nINNER JOIN item_category_mst ON Item_mst.c_cat_code = item_category_mst.c_code\nINNER JOIN item_category_head_mst ON item_category_mst.c_item_category_head_code = item_category_head_mst.c_code\nINNER JOIN item_category_class_mst ON item_category_head_mst.c_item_category_class_code = item_category_class_mst.c_code\ninner join item_group_mst on item_group_mst.c_code = item_mst.c_group_code"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Ecogreen_Itemmaster_OutputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure Update Column",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Copy data Item Master",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_Eco_Green_Update_Columns]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Delete Item Master CSV File",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Ecogreen_Itemmaster_OutputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ECO Green"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-11-09T04:24:11Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load MRP Variance')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data MRP Variance to File",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Delete MRP Variance  File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "select \nstock.c_br_code,\nstock_mst.c_item_code,\nstock_mst.c_batch_no,\nstock_mst.c_item_code + '|' + stock_mst.c_batch_no  as \"Item_Batch\",\nstock_mst.d_exp_dt,\nstock_mst.n_mrp,\nstock_mst.n_mrp_box,\nstock_mst.n_qty_per_box,\nstock_mst.d_ldate,\nstock_mst.d_adate,\nstock_mst.c_createuser,\nitem_mst.n_mrp_box as \"Base_Mrp\",\nmin(stock_mst.n_mrp_box) as \"Min_Mrp\",\nmax(stock_mst.n_mrp_box) as \"Max_Mrp\",\nitem_mst.n_lock as \"Permanent_Lock\",\nitem_mst.n_lock_po as \"Lock_Po\",\nsum(stock.n_bal_qty/item_mst.n_qty_per_box) as \"Stock_Qty\",\n((stock.n_bal_qty/item_mst.n_qty_per_box)*(stock_mst.n_eff_pur_rate*item_mst.n_qty_per_box)) as \"Stock_Value\",\nt.n_mrp_box as 'Mode_Mrp'\n\nfrom dba.stock_mst inner join dba.stock on stock_mst.c_item_code = stock.c_item_code\nand stock_mst.c_batch_no = stock.c_batch_no\ninner join dba.item_mst on stock_mst.c_item_code = item_mst.c_code\n\n inner join\n(Select * from\n(select n_mrp_box, count(*) as cnt,c_item_code,\n             row_number() over (partition by c_item_code order by count(*) desc) as seqnum\n      from dba.stock_mst t\n      group by n_mrp_box,c_item_code) mode_mrp where seqnum=1) t \n\t  on t.c_item_code=stock_mst.c_item_code \n \n\nwhere stock.n_bal_qty <> 0\n\ngroup by\nstock.c_br_code,\nstock_mst.c_item_code,\nstock_mst.c_batch_no,\nstock_mst.c_item_code + '|' + stock_mst.c_batch_no,\nstock_mst.d_exp_dt,\nstock_mst.n_mrp,\nstock_mst.n_mrp_box,\nstock_mst.n_qty_per_box,\nstock_mst.d_ldate,\nstock_mst.d_adate,\nstock_mst.c_createuser,\nitem_mst.n_lock,item_mst.n_mrp_box,stock_mst.n_eff_pur_rate,\nitem_mst.n_qty_per_box,\nstock.n_bal_qty,\nitem_mst.n_lock_po,\nt.n_mrp_box;"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "MRP_Variance_OutputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data MRP Variance File to table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data MRP Variance to File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table MRP_Variance_Final",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": true,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "MRP_Variance_OutputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQL_MRP_Variance",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Delete MRP Variance  File",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "MRP_Variance_OutputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ECO Green"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-02-18T08:31:04Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Mega Menu')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data mega menu",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MySqlSource",
+								"query": "SELECT DISTINCT(wp.`item_code`)\n,wp.`item_fullname`\n,cm.channel_id\n,wc.`category_name`\n,wc.`level`\nFROM wellnessDB.`product` wp\nLEFT JOIN wellnessDB.`channel_publish` cp ON wp.`product_id` = cp.`product_id`\nLEFT JOIN wellnessDB.`channel_master` cm ON cp.`channel_id` = cm.`channel_id`\nLEFT JOIN wellnessDB.`category_channel_mappings` ccm ON wp.`product_id` = ccm.`product_id`\nLEFT JOIN wellnessDB.`category` wc ON ccm.`category_id` = wc.`category_id`\nWHERE wp.`is_main_product` = 0 and cm.channel_id in(1,2) and wc.`category_name` not like 'DEFAULT%'\nORDER BY wp.`item_fullname` ASC"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table Mega_Menu_Staging;",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "OMSMySqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Mega_Menu_OutputTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Mega Menu"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-12-13T08:22:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load OMS Order Details')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "MySQL to SQL server",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MySqlSource",
+								"query": "SELECT DISTINCT\n ws.sale_id AS Order_Id\n,ws.sale_code\n,ws.created_date AS Order_Date\n,STR_TO_DATE(ws.processing_date,'%Y-%m-%d %H:%i:%s') as processing_date\n,STR_TO_DATE(ws.invoice_date,'%Y-%m-%d %H:%i:%s') as invoice_date\n,ws.user_name AS Customer_Name\n,ws.Customer_id\n,ws.store_id\n,wd.rx_type AS RX_type\n,wd.product_id\n,wd.mrp\n,wd.price\n,wd.quantity\n,ws.coupon_discount AS discount_on_order\n,ws.coupon_code\n,ws.grand_total\n,ws.order_invoice_amt\n,ws.txn_status\n,ws.payment_type AS Payment_mode\n,ws.online_TXN\n,ws.ERP_transactionid AS ERP_Id\n,ws.order_invoice_no AS Invoice_no\n,ws.delivery_status AS Order_Status\n,ws.partial_invoice\n,ws.DMS_jobid\n,ws.dman_id\n,ws.dman_name\n,ws.thirdPartyJobStatus\n,ws.three_pl_name\n,STR_TO_DATE(ws.DMS_eta_IST,'%Y-%m-%d %H:%i:%s') AS Actual_Delivery_date\n,STR_TO_DATE(ws.delivered_date,'%Y-%m-%d %H:%i:%s') AS Delivered_date\n,ws.cancel_reason\n,ws.remark\n,ws.MFM_timeframe\n,ws.sale_platform\n,ws.dman_payment_status AS Reconciled\n,ws.collected_amount AS Collected_amount\n,wd.item_code\n,concat(ws.store_id, '/', ws.sale_id, '/', wd.item_code) as brcode_orderid_itemcode_key\n,ws.order_parent_id\n,ws.buyer\nFROM  wellnessDB.order_details wd\nLEFT JOIN wellnessDB.sale ws ON wd.sale_id = ws.sale_id\nWHERE ws.created_date BETWEEN ('2020-04-01') AND ('2021-12-14')\nAND wd.status = 1\nORDER BY ws.sale_id ASC;"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table oms_order_details",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "OMSMySqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OMSSqlServerTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Add columns",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "MySQL to SQL server",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[oms_order_details_add_column]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "SP Update Hour Bucket",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Update Order Revised Status",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_OMS_Order_Details_Update_Hour_Bucket]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Update Order Revised Status",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Add columns",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[USP_Update_Revised_Status]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Order Details"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-12-14T15:44:53Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Order det')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data order det",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "select * ,\n(c_br_code+'/'+c_year+'/'+c_prefix+'/'+ cast(cast(n_srno as float) as varchar) ) 'brcode_year_prefix_srno_key'\n from Order_det"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "EG_Order_det_OutPutFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data EG_Order_det file to table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data order det",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EG_Order_det_OutPutFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "EG_Order_Det_OutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ECO Green"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-11-12T07:24:00Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Product Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data Product",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MySqlSource",
+								"query": "select * from product;"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "drop table OMS_Product;",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "OMSMySqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Product_OutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-10-26T03:55:32Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Pur_Det')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data pur_Det",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "Truncate table Pur_Det",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Pur_Det_InputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Pur_Det_OutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure Insert Final Data",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Copy data pur_Det",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_pur_Det_final_data_insert]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Expiry Analysis"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-09-20T10:39:37Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Stock Godown')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data stock godown",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Stock_Godown_InputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "stock_godown_OutputTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Expiry Analysis"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-11-03T04:26:53Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Stock mst and Stock')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data stock_mst",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table Ex_Stock_Mst_Staging;",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "c_item_code",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_item_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_batch_no",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_batch_no",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "d_exp_dt",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "d_exp_dt",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "n_mrp",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_mrp",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_pur_rate",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_pur_rate",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_sale_rate",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_sale_rate",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_eff_pur_rate",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_eff_pur_rate",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_tax_suffer",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_tax_suffer",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_inc_exc_tax",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_inc_exc_tax",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_add_val",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_add_val",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_lock",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_lock",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_mrp_box",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_mrp_box",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_pur_rate_box",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_pur_rate_box",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_qty_per_box",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_qty_per_box",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "d_ldate",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "d_ldate",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "d_adate",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "d_adate",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "c_createuser",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_createuser",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_audited",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_audited",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_predefined",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_predefined",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ptr_box",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ptr_box",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_ptr",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_ptr",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "t_ltime",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "t_ltime",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "c_mfac_sh_name",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_mfac_sh_name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_permanent_lock",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_permanent_lock",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "c_note",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_note",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_brand_name",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_brand_name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "c_mfac_name",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_mfac_name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "d_mfg_dt",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "d_mfg_dt",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "c_modiuser",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "c_modiuser",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "n_qc_per1",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_qc_per1",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "n_qc_per2",
+											"type": "Decimal",
+											"physicalType": "DECIMAL"
+										},
+										"sink": {
+											"name": "n_qc_per2",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Stock_Mst_InputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "EAStock_MstOutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data Stock",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data stock_mst",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "Truncate table Ex_Stock_Staging;",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EAStockInputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "EAStockOutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure update Column",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Copy data Stock",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_Expiry_Stock_Mst_Update_Column]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Stored procedure update column_copy1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Stored procedure update Column",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_Expiry_Stock_Update_Column]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Expiry Analysis"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-12-02T09:10:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Stock')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data Stock",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "Truncate table Ex_Stock_Staging;",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EAStockInputFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "EAStockOutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure update column",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Copy data Stock",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_Expiry_Stock_Update_Column]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Expiry Analysis"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-11-13T06:47:20Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Store Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data Store Master",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MySqlSource",
+								"query": "select * from store;"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table OMS_Store;",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "store_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "store_name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "branch",
+											"type": "String"
+										},
+										"sink": {
+											"name": "branch",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fax",
+											"type": "String"
+										},
+										"sink": {
+											"name": "fax",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "email",
+											"type": "String"
+										},
+										"sink": {
+											"name": "email",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "password",
+											"type": "String"
+										},
+										"sink": {
+											"name": "password",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "phone",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fcm_token",
+											"type": "String"
+										},
+										"sink": {
+											"name": "fcm_token",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "device_type",
+											"type": "String"
+										},
+										"sink": {
+											"name": "device_type",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "store_address",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_address",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "device_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "device_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "country",
+											"type": "String"
+										},
+										"sink": {
+											"name": "country",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "state",
+											"type": "String"
+										},
+										"sink": {
+											"name": "state",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "city",
+											"type": "String"
+										},
+										"sink": {
+											"name": "city",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "pincode",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "pincode",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "vendor_id",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "vendor_id",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "lattitude",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "lattitude",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 8,
+											"precision": 10
+										}
+									},
+									{
+										"source": {
+											"name": "longitude",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "longitude",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 8,
+											"precision": 10
+										}
+									},
+									{
+										"source": {
+											"name": "status",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "status",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "deliver_phase",
+											"type": "String"
+										},
+										"sink": {
+											"name": "deliver_phase",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "grid_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "grid_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "vendorCode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "vendorCode",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "landmark",
+											"type": "String"
+										},
+										"sink": {
+											"name": "landmark",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "nodeTypeName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "nodeTypeName",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "parentNodeType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "parentNodeType",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "rank",
+											"type": "String"
+										},
+										"sink": {
+											"name": "rank",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "special",
+											"type": "String"
+										},
+										"sink": {
+											"name": "special",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "dropShipmentVendorList",
+											"type": "String"
+										},
+										"sink": {
+											"name": "dropShipmentVendorList",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "createdBy",
+											"type": "String"
+										},
+										"sink": {
+											"name": "createdBy",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "updatedBy",
+											"type": "String"
+										},
+										"sink": {
+											"name": "updatedBy",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "created_at",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "created_at",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "updatedAt",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "updatedAt",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "store_hartbeat_status",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "store_hartbeat_status",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "heartbeat_update_date",
+											"type": "String"
+										},
+										"sink": {
+											"name": "heartbeat_update_date",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "area_manager",
+											"type": "String"
+										},
+										"sink": {
+											"name": "area_manager",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "area_manager_phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "area_manager_phone",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "territory_manager",
+											"type": "String"
+										},
+										"sink": {
+											"name": "territory_manager",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "territory_manager_phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "territory_manager_phone",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "store_manager",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_manager",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "store_manager_phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_manager_phone",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "shipping_providers",
+											"type": "String"
+										},
+										"sink": {
+											"name": "shipping_providers",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "last_syncdate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "last_syncdate",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "OMSMySqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "StoreMaster_OutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-12-24T03:58:00Z"
+			},
+			"dependsOn": []
+		}
+	]
+}

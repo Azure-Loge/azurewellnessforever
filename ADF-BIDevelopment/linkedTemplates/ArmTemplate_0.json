@@ -1,0 +1,1053 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-BIDevelopment"
+		},
+		"AzureDatabricks_Logesys_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks_Logesys'"
+		},
+		"wellness_cold_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'wellness_cold'"
+		},
+		"AzureBlobStorage_LS1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_LS1'"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"Data360MSSQL_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Data360MSSQL'"
+		},
+		"OMSMySql1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'OMSMySql1'"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://wfbidevelopment-kv.vault.azure.net/"
+		},
+		"AzureKeyVault_LS_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://wfbidevelopment-kv.vault.azure.net/"
+		},
+		"SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/SybaseIRMaster"
+		},
+		"Wellness-IntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		},
+		"selfHost-Wellness_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/self-host-wellnessforever"
+		},
+		"AzureBlobStorage_LS_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "wfbidevelopment-secret"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://wfbidevelopment.dfs.core.windows.net/"
+		},
+		"EG21_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "192.168.0.10:49021"
+		},
+		"EG21_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "04M00021"
+		},
+		"EG21_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "dba"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks_Logesys')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7105904630102323.3.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDatabricks_Logesys_accessToken')]"
+					},
+					"existingClusterId": "1122-102848-2eaj6fo7"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault_LS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault_LS_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/wellness_cold')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('wellness_cold_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SybaseIRMaster')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Wellness-IntegrationRuntime')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('Wellness-IntegrationRuntime_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/selfHost-Wellness')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('selfHost-Wellness_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EG_inv_Det_InputFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "wellness_cold",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "inv_det",
+						"folderPath": "2019_20",
+						"container": "ecogreen"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "c_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_srno",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "d_date",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_item_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_batch_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_qty",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_sch_qty",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_sch_disc",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_sale_rate",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_disc_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_st_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cst_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_rst_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_tax_suffer",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_amount",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_mf_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_2nd_sale",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_sp_sale_flag",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cancel_flag",
+						"type": "UTF8"
+					},
+					{
+						"name": "d_ldate",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_vaton",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_tax_on_sch_qty",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_vatts_mrp",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_mrp",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_remark",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_tax_amt",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_free_tax_amt",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_print_batch",
+						"type": "UTF8"
+					},
+					{
+						"name": "d_print_exp_dt",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_eff_pur_rate",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_shift",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_remark2",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_points",
+						"type": "UTF8"
+					},
+					{
+						"name": "t_ltime",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_req_qty",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_allow_points",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_qty1",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_card_reverse_dis",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_dc_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_dc_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_dc_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_dc_srno",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_dc_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_remind_days",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_claim",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_order_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_order_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_order_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_order_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_order_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_claim_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "d_print_mfg_dt",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ord_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ord_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_ord_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ord_srno",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ord_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_cont_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_verified_qty",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_claim_qty",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_claim_val",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_coupon_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_coupon_srno",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_store_track",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_claim_reason",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_barcode",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_sman_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_godown_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_stk_serial",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_bom_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_bom_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_item_tax_suffer",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_item_vatts_flag",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_item_vatts_mrp",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_item_tax_on_sch_qty",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_tray_Code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_marketplace_flag",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_quot_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ts_value",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_pick_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_share_disc",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ord_rate",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ord_rate_diff",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_integration_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_update_stock",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_adjust",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_currency",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_exchange_rate",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_gst_enabled",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_from_gst_type",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_hsn_sac_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cgst_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cgst_amt",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_sgst_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_sgst_amt",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_igst_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_igst_amt",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cess_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cess_amt",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_pk",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_to_gst_type",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_gst_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_taxable_amt",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_inv_qty",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ref_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_ord_pk",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_dc_pk",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_purord_pk",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_std_disc_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_total_discount",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_hold_flag",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_print_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_eb_seq",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_eb_tray_Code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_eb_doc_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_supp_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_eb_load",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_add_cess_per",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_add_cess_rev_excl",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cogs_amt",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/wellness_cold')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_LS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault_LS",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('AzureBlobStorage_LS_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault_LS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_LS1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage_LS1_connectionString')]",
+					"accountKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault_LS",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "wellnessforeveradls-secret"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault_LS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SybaseIRMaster",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SybaseIRMaster')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Data360MSSQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('Data360MSSQL_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault1",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "D360-PWD"
+					}
+				},
+				"connectVia": {
+					"referenceName": "Wellness-IntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Wellness-IntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EG21')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Ecogreen2021",
+				"annotations": [],
+				"type": "Sybase",
+				"typeProperties": {
+					"server": "[parameters('EG21_properties_typeProperties_server')]",
+					"database": "[parameters('EG21_properties_typeProperties_database')]",
+					"authenticationType": "Basic",
+					"username": "[parameters('EG21_properties_typeProperties_username')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault1",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "EG2021-pwd"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SybaseIRMaster",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SybaseIRMaster')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OMSMySql1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "MySql",
+				"typeProperties": {
+					"connectionString": "[parameters('OMSMySql1_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault1",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "OMSNewPawd"
+					}
+				},
+				"connectVia": {
+					"referenceName": "Wellness-IntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Wellness-IntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Full Load AppsFlyer Data')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Loads Customer Master",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_appsflyer_customer_master]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Load Appsflyer flags",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Loads Customer Master",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_Appsflyer_update_flags]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "AppsFlyer"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-10-13T03:59:51Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Data360MSSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Load aggr_dailysales')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SP for aggr_dailysales to aggr_dailysales_master table",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_aggr_dailysales_Master_Data]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Expiry Analysis"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-09-22T05:02:01Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Data360MSSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/000andGC95InputFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "000andGC95WelltoHlth",
+						"folderPath": "FullLoad",
+						"container": "ecogreen"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_LS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/000andGC95WelltoHlthOutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "000andGC95WelltoHlth"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Data360MSSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Amazon_Item_OutPutTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Amazon_OMS_Order_Details_staging"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Data360MSSQL')]"
+			]
+		}
+	]
+}
