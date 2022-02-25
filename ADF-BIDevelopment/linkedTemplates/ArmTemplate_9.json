@@ -2510,6 +2510,7 @@
 							},
 							"sink": {
 								"type": "SqlServerSink",
+								"preCopyScript": "truncate table HelthTech_Sale_751_701_Debit_Staging",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false,
 								"tableOption": "autoCreate"
@@ -2653,6 +2654,7 @@
 							},
 							"sink": {
 								"type": "SqlServerSink",
+								"preCopyScript": "truncate table HelthTech_JO_JV_751_701_Credit_Staging",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false,
 								"tableOption": "autoCreate"
