@@ -302,7 +302,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"sqlReaderQuery": "Select DateAdd(DD,-7,max(order_date)) as maxdate from Amazon_OMS_Order_Details_staging",
+								"sqlReaderQuery": "Select convert(varchar, DateAdd(DD,-7,max(order_date)), 23)  as maxdate from Amazon_OMS_Order_Details_staging",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -448,7 +448,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"sqlReaderQuery": "Select DateAdd(DD,-7,max(order_date)) as maxdate from OMS_Cancel_Order_Details",
+								"sqlReaderQuery": "Select convert(varchar, DateAdd(DD,-7,max(order_date)), 23)  as maxdate from OMS_Cancel_Order_Details",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -6734,7 +6734,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"sqlReaderQuery": "Select DateAdd(DD,-7,max(order_date)) as maxdate from OMS_Order_Details",
+								"sqlReaderQuery": "Select convert(varchar, DateAdd(DD,-7,max(order_date)), 23) as maxdate from OMS_Order_Details",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
