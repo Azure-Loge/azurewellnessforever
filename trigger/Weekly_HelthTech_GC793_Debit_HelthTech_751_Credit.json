@@ -1,0 +1,29 @@
+{
+	"name": "Weekly_HelthTech_GC793_Debit_HelthTech_751_Credit",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "HelthTech_GC793_Debit_HelthTech_751_Credit",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Week",
+				"interval": 1,
+				"startTime": "2022-03-08T09:00:00",
+				"timeZone": "India Standard Time",
+				"schedule": {
+					"weekDays": [
+						"Sunday"
+					]
+				}
+			}
+		}
+	}
+}
