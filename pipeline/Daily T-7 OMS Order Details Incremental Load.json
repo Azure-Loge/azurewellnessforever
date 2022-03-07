@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "Select DateAdd(DD,-7,max(order_date)) as maxdate from OMS_Order_Details",
+						"sqlReaderQuery": "Select convert(varchar, DateAdd(DD,-7,max(order_date)), 23) as maxdate from OMS_Order_Details",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
