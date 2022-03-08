@@ -13,6 +13,71 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Load Image Data')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data Image Data",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MySqlSource",
+								"query": "\n\nSELECT DISTINCT (wp.item_code)\n\n,wp.product_id\n\n,wp.item_fullname\n\n,cm.channel_name\n\n,cp.publish_status\n\n,wp.front_image\n\n,wp.num_of_imgs\n\n,wp.rx_type\n\n,mr.file_name\n\n,mr.file_url\n\nFROM wellnessDB.product wp\n\nLEFT JOIN wellnessDB.media mr ON wp.product_id = mr.product_id\n\nLEFT JOIN wellnessDB.channel_publish cp ON wp.product_id = cp.product_id\n\nLEFT JOIN wellnessDB.channel_master cm ON cp.channel_id = cm.channel_id\n\nWHERE wp.is_main_product = 0\n\nAND cp.publish_status = '1'\n\nAND cm.channel_name IN ('Mobile App','Webstore','T-Com','Dunzo','Amazon')\n\nORDER BY wp.item_fullname ASC"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "OMSMySqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "EGImageOutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ECO Green"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-09-14T06:03:41Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Load Inv Det')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2926,34 +2991,6 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2022-02-24T09:15:00",
-						"timeZone": "India Standard Time"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Full Load EG Product Master')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Full Load EG Product Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2021-12-09T09:15:00",
 						"timeZone": "India Standard Time"
 					}
 				}

@@ -13,6 +13,551 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Store Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data Store Master",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MySqlSource",
+								"query": "select * from store;"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table OMS_Store;",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "store_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "store_name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "branch",
+											"type": "String"
+										},
+										"sink": {
+											"name": "branch",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fax",
+											"type": "String"
+										},
+										"sink": {
+											"name": "fax",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "email",
+											"type": "String"
+										},
+										"sink": {
+											"name": "email",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "password",
+											"type": "String"
+										},
+										"sink": {
+											"name": "password",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "phone",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fcm_token",
+											"type": "String"
+										},
+										"sink": {
+											"name": "fcm_token",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "device_type",
+											"type": "String"
+										},
+										"sink": {
+											"name": "device_type",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "store_address",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_address",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "device_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "device_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "country",
+											"type": "String"
+										},
+										"sink": {
+											"name": "country",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "state",
+											"type": "String"
+										},
+										"sink": {
+											"name": "state",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "city",
+											"type": "String"
+										},
+										"sink": {
+											"name": "city",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "pincode",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "pincode",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "vendor_id",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "vendor_id",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "lattitude",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "lattitude",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 8,
+											"precision": 10
+										}
+									},
+									{
+										"source": {
+											"name": "longitude",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "longitude",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 8,
+											"precision": 10
+										}
+									},
+									{
+										"source": {
+											"name": "status",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "status",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "deliver_phase",
+											"type": "String"
+										},
+										"sink": {
+											"name": "deliver_phase",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "grid_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "grid_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "vendorCode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "vendorCode",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "landmark",
+											"type": "String"
+										},
+										"sink": {
+											"name": "landmark",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "nodeTypeName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "nodeTypeName",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "parentNodeType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "parentNodeType",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "rank",
+											"type": "String"
+										},
+										"sink": {
+											"name": "rank",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "special",
+											"type": "String"
+										},
+										"sink": {
+											"name": "special",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "dropShipmentVendorList",
+											"type": "String"
+										},
+										"sink": {
+											"name": "dropShipmentVendorList",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "createdBy",
+											"type": "String"
+										},
+										"sink": {
+											"name": "createdBy",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "updatedBy",
+											"type": "String"
+										},
+										"sink": {
+											"name": "updatedBy",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "created_at",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "created_at",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "updatedAt",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "updatedAt",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "store_hartbeat_status",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "store_hartbeat_status",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "heartbeat_update_date",
+											"type": "String"
+										},
+										"sink": {
+											"name": "heartbeat_update_date",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "area_manager",
+											"type": "String"
+										},
+										"sink": {
+											"name": "area_manager",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "area_manager_phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "area_manager_phone",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "territory_manager",
+											"type": "String"
+										},
+										"sink": {
+											"name": "territory_manager",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "territory_manager_phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "territory_manager_phone",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "store_manager",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_manager",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "store_manager_phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "store_manager_phone",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "shipping_providers",
+											"type": "String"
+										},
+										"sink": {
+											"name": "shipping_providers",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "last_syncdate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "last_syncdate",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "OMSMySqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "StoreMaster_OutPutTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-12-24T03:58:00Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Full Load Wellness Medicare S14278 Debit')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -5746,71 +6291,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2022-01-19T07:55:27Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Load Image Data')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data Image Data",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "MySqlSource",
-								"query": "\n\nSELECT DISTINCT (wp.item_code)\n\n,wp.product_id\n\n,wp.item_fullname\n\n,cm.channel_name\n\n,cp.publish_status\n\n,wp.front_image\n\n,wp.num_of_imgs\n\n,wp.rx_type\n\n,mr.file_name\n\n,mr.file_url\n\nFROM wellnessDB.product wp\n\nLEFT JOIN wellnessDB.media mr ON wp.product_id = mr.product_id\n\nLEFT JOIN wellnessDB.channel_publish cp ON wp.product_id = cp.product_id\n\nLEFT JOIN wellnessDB.channel_master cm ON cp.channel_id = cm.channel_id\n\nWHERE wp.is_main_product = 0\n\nAND cp.publish_status = '1'\n\nAND cm.channel_name IN ('Mobile App','Webstore','T-Com','Dunzo','Amazon')\n\nORDER BY wp.item_fullname ASC"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"tableOption": "autoCreate"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "OMSMySqlTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "EGImageOutPutTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "ECO Green"
-				},
-				"annotations": [],
-				"lastPublishTime": "2021-09-14T06:03:41Z"
 			},
 			"dependsOn": []
 		}
