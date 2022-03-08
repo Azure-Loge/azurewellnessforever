@@ -89,7 +89,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "Select DateAdd(DD,-7,max(d_date)) as Max_Date from inv_Master",
+						"sqlReaderQuery": "Select convert(varchar, DateAdd(DD,-7,max(d_date)), 23)  as Max_Date from inv_Master",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
