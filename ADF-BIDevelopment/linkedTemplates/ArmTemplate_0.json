@@ -941,6 +941,46 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Full Load Customer Retention')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Update Customer Retention Data",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[USP_Customer_Retention]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Data360MSSQL",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "AppsFlyer"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Data360MSSQL')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Load aggr_dailysales')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1022,27 +1062,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "000andGC95WelltoHlth"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Data360MSSQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Amazon_Item_OutPutTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Data360MSSQL",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Amazon_OMS_Order_Details_staging"
 				}
 			},
 			"dependsOn": [
