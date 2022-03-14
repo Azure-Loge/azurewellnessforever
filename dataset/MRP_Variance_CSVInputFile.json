@@ -1,0 +1,23 @@
+{
+	"name": "MRP_Variance_CSVInputFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "FullLoad",
+				"container": "ecogreen"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

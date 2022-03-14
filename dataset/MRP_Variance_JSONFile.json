@@ -1,0 +1,54 @@
+{
+	"name": "MRP_Variance_JSONFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "MRP_VarianceJSON.txt",
+				"folderPath": "FullLoad",
+				"container": "ecogreen"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"sku": {
+					"type": "string"
+				},
+				"host": {
+					"type": "string"
+				},
+				"smart_price": {
+					"type": "integer"
+				},
+				"cost": {
+					"type": "integer"
+				},
+				"price": {
+					"type": "integer"
+				},
+				"discount": {
+					"type": "integer"
+				},
+				"url": {
+					"type": "string"
+				},
+				"id": {
+					"type": "string"
+				},
+				"last_updated_at": {
+					"type": "string"
+				},
+				"competitors": {
+					"type": "array"
+				}
+			}
+		}
+	}
+}

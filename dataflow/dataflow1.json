@@ -1,0 +1,75 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MRP_Variance_JSONFile",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "MRP_Variance_CSVInputFile",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          competitors as (discount as double, host as string, match_type as string, price as double, sku as string, url as string)[],",
+				"          cost as boolean,",
+				"          discount as double,",
+				"          host as string,",
+				"          id as string,",
+				"          last_updated_at as string,",
+				"          price as double,",
+				"          sku as integer,",
+				"          smart_price as double,",
+				"          url as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> source1",
+				"source1 foldDown(unroll(competitors),",
+				"     mapColumn(",
+				"          cost,",
+				"          discount,",
+				"          host,",
+				"          id,",
+				"          last_updated_at,",
+				"          price,",
+				"          sku,",
+				"          smart_price,",
+				"          url,",
+				"          competitors_discount = competitors.discount,",
+				"          competitors_host = competitors.host,",
+				"          competitors_match_type = competitors.match_type,",
+				"          competitors_price = competitors.price,",
+				"          competitors_sku = competitors.sku,",
+				"          competitors_url = competitors.url",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['MRP_Variance_CSVInputFile.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"name": "RestResource_MRP_API",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestService_MRP_API",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
