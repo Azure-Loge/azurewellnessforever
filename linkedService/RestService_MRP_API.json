@@ -1,0 +1,12 @@
+{
+	"name": "RestService_MRP_API",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://webapi.intelligencenode.com/wellness/smartprices?app_key=62oid32sd896g",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
