@@ -59,6 +59,10 @@
 			"type": "string",
 			"defaultValue": "dba"
 		},
+		"RestService_MRP_API_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://webapi.intelligencenode.com/wellness/smartprices?app_key=62oid32sd896g"
+		},
 		"SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/5905a4bc-8be8-4682-9857-fde30ce16766/resourcegroups/wellnessforever-dataplatform-rg/providers/Microsoft.DataFactory/factories/wellnessforever-adf/integrationruntimes/SybaseIRMaster"
@@ -125,6 +129,9 @@
 					},
 					"AzureKeyVault_LS_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_LS_properties_typeProperties_baseUrl')]"
+					},
+					"RestService_MRP_API_properties_typeProperties_url": {
+						"value": "[parameters('RestService_MRP_API_properties_typeProperties_url')]"
 					},
 					"SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('SybaseIRMaster_properties_typeProperties_linkedInfo_resourceId')]"

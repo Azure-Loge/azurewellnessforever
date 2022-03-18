@@ -13,6 +13,711 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/OMS_CancelOrder_Outputtable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "OMS_Cancel_Order_Details"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OrderDetInputFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FolderName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "order_det",
+						"folderPath": {
+							"value": "@dataset().FolderName",
+							"type": "Expression"
+						},
+						"container": "purchase"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "c_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_srno",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_seq",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "d_date",
+						"type": "INT96"
+					},
+					{
+						"name": "c_item_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_ref_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cancel_flag",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "d_ldate",
+						"type": "INT96"
+					},
+					{
+						"name": "n_pack_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_sch_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_pack_sch_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_rate",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_remark",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_post",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_disc_per",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_min_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_max_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_bal_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_shift",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_sp_rate",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_supp_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_cust_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_quote_rate",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_quote_mrp",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_quote_mrp_flag",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "t_ltime",
+						"type": "INT96"
+					},
+					{
+						"name": "n_min_margin_per",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_mrp",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_sale_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_tran_count",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_sp_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_list_id",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_ord_supp_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_batch_no",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_rack",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_org_pack_qty",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_store_track",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_tax_per",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_old_order_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_old_order_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_old_order_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_old_order_no",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_old_order_seq",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_ptr",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_auto_flag",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "d_delivery_date",
+						"type": "INT96"
+					},
+					{
+						"name": "c_indent_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_indent_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_indent_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_indent_srno",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_indent_seq",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_currency",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_exchange_rate",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_pk",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_igst_per",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_sgst_per",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_cgst_per",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_cess_per",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_fulfillment_flag",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_dc_pk",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_dc_seq",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_indent_pk",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_supp_alt_item_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_hsn_sac_code",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OrderDetOutputTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "order_det_staging"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OrderLogs_OutputTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Data360MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "OMS_Order_Logs"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OrderMstInputFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FolderName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "order_mst",
+						"folderPath": {
+							"value": "@dataset().FolderName",
+							"type": "Expression"
+						},
+						"container": "purchase"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "c_br_Code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_year",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_prefix",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_srno",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "d_date",
+						"type": "INT96"
+					},
+					{
+						"name": "c_ref_br_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_cust_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_detail",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_total",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_cancel_flag",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "d_ldate",
+						"type": "INT96"
+					},
+					{
+						"name": "n_post",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_type",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_user",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_remark",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_shift",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_reason_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "t_ltime",
+						"type": "INT96"
+					},
+					{
+						"name": "n_status",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_approved_by",
+						"type": "UTF8"
+					},
+					{
+						"name": "t_time",
+						"type": "INT96"
+					},
+					{
+						"name": "n_sale_data_days",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_supp_cust_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_order_type_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_cnt_no",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_terms_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_debit_days",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_store_track",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_tran_type",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_currency_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_exchange_rate",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "n_inter_pur",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_computer_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_sys_user",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_sys_ip",
+						"type": "UTF8"
+					},
+					{
+						"name": "t_valid_till",
+						"type": "INT96"
+					},
+					{
+						"name": "t_valid_till_old",
+						"type": "INT96"
+					},
+					{
+						"name": "c_modiuser",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_dc_div",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_mfac_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "d_delivery_date",
+						"type": "INT96"
+					},
+					{
+						"name": "n_urgent",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_note",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_web_order_id",
+						"type": "UTF8"
+					},
+					{
+						"name": "c_web_order_status",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_pk",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "c_print_format_code",
+						"type": "UTF8"
+					},
+					{
+						"name": "n_fulfillment_flag",
+						"type": "DECIMAL",
+						"precision": 38,
+						"scale": 18
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/OrderMstOutputTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2191,101 +2896,6 @@
 					"compressionCodec": "snappy"
 				},
 				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SQL_EG_Inv_Det')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Data360MSSQL",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "EG_Inv_Det"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SQL_EG_Inv_Mst')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Data360MSSQL",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "EG_Inv_Mst"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SQL_HelthTech_GC238_Credit')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Data360MSSQL",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "HelthTech_GC238_Credit_Staging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SQL_HelthTech_JO_JV_751_701_Credit')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Data360MSSQL",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "HelthTech_JO_JV_751_701_Credit_Staging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SQL_HelthTech_Purchase_751_Credit')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Data360MSSQL",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "HelthTech_Purchase_751_Credit_Staging"
-				}
 			},
 			"dependsOn": []
 		}
