@@ -312,6 +312,146 @@
 					"referenceName": "Data360MSSQL",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "HelthTech Sale 751  and 701 to File Failure Mail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data HelthTech Sale 751  and 701 to File",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
+					"method": "POST",
+					"body": {
+						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale 751  and 701 to File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "HelthTech Sale 751 701 Debit File to Table Failure Mail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy dataHelthTech Sale 751 and 701 Debit File to Table",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
+					"method": "POST",
+					"body": {
+						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy dataHelthTech Sale 751 and 701 Debit File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Stored procedure get Final Data Failure Mail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure get Final Data",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
+					"method": "POST",
+					"body": {
+						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure get Final Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "HelthTech JO-JV 751 and 701 Credit Failure Mail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data HelthTech JO-JV 751 and 701 Credit",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
+					"method": "POST",
+					"body": {
+						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech JO-JV 751 and 701 Credit').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "HelthTech JO-JV 751 701 File to Table Failure Mail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data HelthTech JO-JV 751 and 701 File to Table",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
+					"method": "POST",
+					"body": {
+						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech JO-JV 751 and 701 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"folder": {
