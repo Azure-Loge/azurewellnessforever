@@ -12240,7 +12240,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data MRP Variance to File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data MRP Variance to File\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data MRP Variance to File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
