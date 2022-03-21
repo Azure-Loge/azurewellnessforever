@@ -242,7 +242,7 @@
 					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale GC793 Debit').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"value": "{\n\"Process\":\"Copy data HelthTech Sale GC793 Debit Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale GC793 Debit').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 						"type": "Expression"
 					}
 				}
@@ -270,7 +270,7 @@
 					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale GC793 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"value": "{\n\"Process\":\"Sale GC793 File to Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale GC793 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 						"type": "Expression"
 					}
 				}
@@ -298,7 +298,7 @@
 					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech 751 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"value": "{\n\"Process\":\"Copy data HelthTech 751 File to Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech 751 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 						"type": "Expression"
 					}
 				}
@@ -326,7 +326,7 @@
 					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure get Final Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"value": "{\n\"Process\":\"Stored procedure get Final Data Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure get Final Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 						"type": "Expression"
 					}
 				}
