@@ -189,7 +189,7 @@
 					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data EG Get Item').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"value": "{\n\"Process\":\"Copy data EG Get Item Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data EG Get Item').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 						"type": "Expression"
 					}
 				}
@@ -217,7 +217,7 @@
 					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Item Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"value": "{\n\"Process\":\"Copy data Item Master Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Item Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 						"type": "Expression"
 					}
 				}
@@ -245,7 +245,7 @@
 					"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure Update Column').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+						"value": "{\n\"Process\":\"Stored procedure Update Column Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure Update Column').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 						"type": "Expression"
 					}
 				}
