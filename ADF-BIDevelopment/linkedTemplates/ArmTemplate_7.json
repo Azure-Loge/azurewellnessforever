@@ -633,7 +633,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Channel Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data Channel Master Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Channel Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -728,7 +728,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Product Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data Product Master Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Product Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -3860,7 +3860,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data EG Get Item').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data EG Get Item Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data EG Get Item').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -3889,7 +3889,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Item Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data Item Master Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Item Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -3918,7 +3918,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure Update Column').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Stored procedure Update Column Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure Update Column').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -4139,7 +4139,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data MRP Variance File to table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data MRP Variance File to table\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data MRP Variance File to table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -4234,7 +4234,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data mega menu').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data mega menu Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data mega menu').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}

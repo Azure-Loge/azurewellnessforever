@@ -5499,7 +5499,7 @@
 						}
 					},
 					{
-						"name": "Get Max Date from Order Detail Failure Mail",
+						"name": "Get Max Date from Amzaon Order Detail Failure Mail",
 						"type": "WebActivity",
 						"dependsOn": [
 							{
@@ -5522,7 +5522,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date from Order Detail').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Get Max Date from Amzaon Order Detail Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date from Order Detail').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5551,7 +5551,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Amazon Item Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data Amazon Item Data Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Amazon Item Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5580,7 +5580,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure update columns').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Stored procedure update columns Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure update columns').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5727,7 +5727,7 @@
 						}
 					},
 					{
-						"name": "Get Max Date from Order Detail Failure Mail",
+						"name": "Get Max Date from Cancel Order Detail Failure Mail",
 						"type": "WebActivity",
 						"dependsOn": [
 							{
@@ -5750,7 +5750,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date from Order Detail').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Get Max Date from Cancel Order Detail Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date from Order Detail').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5779,7 +5779,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('MySQL to SQL server Cancel Order').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"MySQL to SQL server Cancel Order Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('MySQL to SQL server Cancel Order').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5808,7 +5808,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure update columns').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Stored procedure update columns Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure update columns').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -11966,7 +11966,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date From Invoice Master table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Get Max Date Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date From Invoice Master table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -11995,7 +11995,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data inv Det Query into File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data inv Det Query into File Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data inv Det Query into File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -12024,7 +12024,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data EG Inv_det file to Staging Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data EG Inv_det file to Staging Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data EG Inv_det file to Staging Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -12053,7 +12053,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data inv Mst Query into File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data inv Mst Query into File Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data inv Mst Query into File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -12082,7 +12082,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data EG inv_mst File to Staging table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data EG inv_mst File to Staging table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data EG inv_mst File to Staging table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -12111,7 +12111,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data invoice master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data invoice master Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data invoice master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -12140,7 +12140,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data inv Det staging to EG_inv_Det Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data inv Det stag to EG_inv_Det Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data inv Det staging to EG_inv_Det Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -12169,7 +12169,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data inv Mst Staging table to EG inv_mst Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"inv mst Staging table to inv_mst Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data inv Mst Staging table to EG inv_mst Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -12339,13 +12339,13 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date from Order Detail').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Get Max Date from Order Detail Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date from Order Detail').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
 					},
 					{
-						"name": "MySQL to SQL server Failure Mail",
+						"name": "MySQL to SQL OMS Order Details Failure Mail",
 						"type": "WebActivity",
 						"dependsOn": [
 							{
@@ -12368,7 +12368,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('MySQL to SQL server').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"MySQL to SQL OMS Order Details Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('MySQL to SQL server').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -12397,7 +12397,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Store Procedure Update Flagging Columns').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Store Procedure Update Flagging Columns Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Store Procedure Update Flagging Columns').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}

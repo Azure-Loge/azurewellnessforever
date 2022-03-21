@@ -89,7 +89,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Product').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data Product Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Product').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -1482,7 +1482,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Store Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data Store Master Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data Store Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5823,7 +5823,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale GC793 Debit').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data HelthTech Sale GC793 Debit Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale GC793 Debit').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5852,7 +5852,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale GC793 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Sale GC793 File to Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale GC793 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5881,7 +5881,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech 751 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Copy data HelthTech 751 File to Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech 751 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -5910,7 +5910,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure get Final Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Stored procedure get Final Data Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure get Final Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6279,7 +6279,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale 751  and 701 to File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"HelthTech Sale 751  and 701 to File Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech Sale 751  and 701 to File').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6308,7 +6308,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy dataHelthTech Sale 751 and 701 Debit File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"HelthTech Sale 751 701 Debit File to Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy dataHelthTech Sale 751 and 701 Debit File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6337,7 +6337,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure get Final Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Stored procedure get Final Data Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Stored procedure get Final Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6366,7 +6366,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech JO-JV 751 and 701 Credit').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"HelthTech JO-JV 751 and 701 Credit Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech JO-JV 751 and 701 Credit').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6395,7 +6395,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech JO-JV 751 and 701 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"HelthTech JO-JV 751 701 File to Table Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data HelthTech JO-JV 751 and 701 File to Table').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6581,7 +6581,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date from Appsflyer source Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Get Max Date Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Get Max Date from Appsflyer source Data').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6610,7 +6610,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Distinct Appsflyer IDs').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Distinct Appsflyer IDs Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Distinct Appsflyer IDs').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6639,7 +6639,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Loads Customer Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Loads Customer Master Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Loads Customer Master').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6668,7 +6668,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"Process\":\"Copy data into Excel\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Load Appsflyer flags').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
+								"value": "{\n\"Process\":\"Load Appsflyer flags Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Load Appsflyer flags').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
 								"type": "Expression"
 							}
 						}
