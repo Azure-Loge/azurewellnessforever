@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "MRP_VarianceJSON.txt",
+				"fileName": "MRP_Variance_JSONFile.txt",
 				"folderPath": "FullLoad",
 				"container": "ecogreen"
 			}
