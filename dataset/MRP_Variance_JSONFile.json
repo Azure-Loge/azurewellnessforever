@@ -36,6 +36,9 @@
 				"discount": {
 					"type": "integer"
 				},
+				"availability": {
+					"type": "string"
+				},
 				"url": {
 					"type": "string"
 				},
@@ -47,6 +50,9 @@
 				},
 				"competitors": {
 					"type": "array"
+				},
+				"status": {
+					"type": "string"
 				}
 			}
 		}

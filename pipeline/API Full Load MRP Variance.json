@@ -75,7 +75,10 @@
 				"outputs": [
 					{
 						"referenceName": "MRP_Variance_JSONFile",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "MRP_Variance"
+						}
 					}
 				]
 			}
