@@ -7,7 +7,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Copy data MRP API to JSOn File",
+						"activity": "Copy data MRP API to JSON File",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -34,7 +34,7 @@
 				}
 			},
 			{
-				"name": "Copy data MRP API to JSOn File",
+				"name": "Copy data MRP API to JSON File",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
