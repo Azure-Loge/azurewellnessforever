@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Full Load Item Master",
+					"referenceName": "Full Load Item Master _Live_SKU",
 					"type": "PipelineReference"
 				}
 			}
