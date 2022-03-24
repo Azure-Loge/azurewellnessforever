@@ -95,7 +95,7 @@
 						"type": "ExecuteDataFlow",
 						"dependsOn": [
 							{
-								"activity": "Copy data MRP API to JSOn File",
+								"activity": "Copy data MRP API to JSON File",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -128,7 +128,7 @@
 						}
 					},
 					{
-						"name": "Copy data MRP API to JSOn File",
+						"name": "Copy data MRP API to JSON File",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -11787,7 +11787,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Full Load Item Master')]",
+			"name": "[concat(parameters('factoryName'), '/Full Load Item Master _Live_SKU')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -26613,6 +26613,31 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/MRP_API_JSON_File')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "MRP_Variance_JSONFile.txt",
+						"folderPath": "FullLoad",
+						"container": "ecogreen"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_LS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/MRP_Variance_CSVInputFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -26654,7 +26679,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "MRP_VarianceJSON.txt",
+						"fileName": "MRP_Variance_JSONFile.txt",
 						"folderPath": "FullLoad",
 						"container": "ecogreen"
 					}
@@ -26680,6 +26705,9 @@
 						"discount": {
 							"type": "integer"
 						},
+						"availability": {
+							"type": "string"
+						},
 						"url": {
 							"type": "string"
 						},
@@ -26691,6 +26719,9 @@
 						},
 						"competitors": {
 							"type": "array"
+						},
+						"status": {
+							"type": "string"
 						}
 					}
 				}
@@ -37329,7 +37360,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Full Load Item Master",
+							"referenceName": "Full Load Item Master _Live_SKU",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -37346,7 +37377,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Full Load Item Master')]"
+				"[concat(variables('factoryId'), '/pipelines/Full Load Item Master _Live_SKU')]"
 			]
 		},
 		{
@@ -37731,37 +37762,45 @@
 					],
 					"scriptLines": [
 						"source(output(",
-						"          competitors as (discount as double, host as string, match_type as string, price as double, sku as string, url as string)[],",
+						"          availability as string,",
+						"          competitors as (availability as string, discount as float, host as string, match_type as string, price as float, sku as string, url as string)[],",
 						"          cost as boolean,",
-						"          discount as double,",
+						"          discount as float,",
 						"          host as string,",
 						"          id as string,",
 						"          last_updated_at as string,",
-						"          price as double,",
+						"          price as float,",
 						"          sku as integer,",
-						"          smart_price as double,",
+						"          smart_price as float,",
+						"          status as string,",
 						"          url as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
-						"     documentForm: 'arrayOfDocuments') ~> source1",
+						"     documentForm: 'documentPerLine',",
+						"     dateFormats: ['yyyy-MM-dd'],",
+						"     preferredIntegralType: 'integer',",
+						"     preferredFractionalType: 'float') ~> source1",
 						"source1 foldDown(unroll(competitors),",
 						"     mapColumn(",
-						"          cost,",
-						"          discount,",
+						"          sku,",
 						"          host,",
+						"          smart_price,",
+						"          cost,",
+						"          price,",
+						"          discount,",
+						"          availability,",
+						"          url,",
 						"          id,",
 						"          last_updated_at,",
-						"          price,",
-						"          sku,",
-						"          smart_price,",
-						"          url,",
-						"          competitors_discount = competitors.discount,",
-						"          competitors_host = competitors.host,",
-						"          competitors_match_type = competitors.match_type,",
-						"          competitors_price = competitors.price,",
+						"          status,",
 						"          competitors_sku = competitors.sku,",
+						"          competitors_availability = competitors.availability,",
+						"          competitors_discount = competitors.discount,",
+						"          competitors_price = competitors.price,",
+						"          competitors_match_type = competitors.match_type,",
+						"          competitors_host = competitors.host,",
 						"          competitors_url = competitors.url",
 						"     ),",
 						"     skipDuplicateMapInputs: false,",

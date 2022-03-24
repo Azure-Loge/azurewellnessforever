@@ -2287,6 +2287,29 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/MRP_API_JSON_File')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "MRP_Variance_JSONFile.txt",
+						"folderPath": "FullLoad",
+						"container": "ecogreen"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/MRP_Variance_CSVInputFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2326,7 +2349,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "MRP_VarianceJSON.txt",
+						"fileName": "MRP_Variance_JSONFile.txt",
 						"folderPath": "FullLoad",
 						"container": "ecogreen"
 					}
@@ -2352,6 +2375,9 @@
 						"discount": {
 							"type": "integer"
 						},
+						"availability": {
+							"type": "string"
+						},
 						"url": {
 							"type": "string"
 						},
@@ -2363,6 +2389,9 @@
 						},
 						"competitors": {
 							"type": "array"
+						},
+						"status": {
+							"type": "string"
 						}
 					}
 				}
@@ -2425,25 +2454,6 @@
 				"type": "MySqlTable",
 				"schema": [],
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OMSSqlServerTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Data360MSSQL",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "OMS_Order_Details"
-				}
 			},
 			"dependsOn": []
 		}
