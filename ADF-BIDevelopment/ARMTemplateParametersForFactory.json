@@ -42,7 +42,7 @@
 			"value": "04M00021"
 		},
 		"EG21_properties_typeProperties_username": {
-			"value": "dba"
+			"value": "viewuser"
 		},
 		"RestService_MRP_API_properties_typeProperties_url": {
 			"value": "https://webapi.intelligencenode.com/wellness/smartprices?app_key=62oid32sd896g"

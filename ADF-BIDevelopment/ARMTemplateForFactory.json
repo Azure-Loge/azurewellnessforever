@@ -57,7 +57,7 @@
 		},
 		"EG21_properties_typeProperties_username": {
 			"type": "string",
-			"defaultValue": "dba"
+			"defaultValue": "viewuser"
 		},
 		"RestService_MRP_API_properties_typeProperties_url": {
 			"type": "string",

@@ -77,7 +77,7 @@
 		},
 		"EG21_properties_typeProperties_username": {
 			"type": "string",
-			"defaultValue": "dba"
+			"defaultValue": "viewuser"
 		}
 	},
 	"variables": {
