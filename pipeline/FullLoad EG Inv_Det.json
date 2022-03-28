@@ -24,7 +24,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SybaseSource",
-						"query": "Select * from inv_det where convert(date,d_date) between '2022-02-14' and '2022-02-15'"
+						"query": "Select * from dba.inv_det where convert(date,d_date) between '2022-02-14' and '2022-02-15'"
 					},
 					"sink": {
 						"type": "ParquetSink",
