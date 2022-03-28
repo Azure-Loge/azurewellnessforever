@@ -1,6 +1,5 @@
 {
 	"name": "EG21",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"description": "Ecogreen2021",
 		"annotations": [],
@@ -9,7 +8,7 @@
 			"server": "192.168.0.10:49021",
 			"database": "04M00021",
 			"authenticationType": "Basic",
-			"username": "dba",
+			"username": "viewuser",
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
@@ -23,5 +22,6 @@
 			"referenceName": "SybaseIRMaster",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
