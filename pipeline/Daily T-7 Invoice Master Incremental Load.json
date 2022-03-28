@@ -25,7 +25,7 @@
 					"source": {
 						"type": "SybaseSource",
 						"query": {
-							"value": "Select * from inv_det where \nconvert(date,d_date) >='@{activity('Get Max Date From Invoice Master table').output.firstRow.Max_Date}'",
+							"value": "Select * from dba.inv_det where \nconvert(date,d_date) >='@{activity('Get Max Date From Invoice Master table').output.firstRow.Max_Date}'",
 							"type": "Expression"
 						}
 					},
@@ -122,7 +122,7 @@
 					"source": {
 						"type": "SybaseSource",
 						"query": {
-							"value": "Select * from inv_mst \nwhere convert(date,d_date) >= '@{activity('Get Max Date From Invoice Master table').output.firstRow.Max_Date}'",
+							"value": "Select * from dba.inv_mst \nwhere convert(date,d_date) >= '@{activity('Get Max Date From Invoice Master table').output.firstRow.Max_Date}'",
 							"type": "Expression"
 						}
 					},
