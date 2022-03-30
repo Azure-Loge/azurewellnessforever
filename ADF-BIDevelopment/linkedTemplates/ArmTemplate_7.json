@@ -13,6 +13,80 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Excel Dump Files')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data into Excel",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SybaseSource",
+								"query": "Select ( cogs.c_br_code ) as c_br_code,\n\t\t( cogs.c_year ) as c_year,   \n\t\t( cogs.c_prefix ) as c_prefix,   \n\t\t( cogs.n_tran_no ) as n_tran_no,   \n\t\t( cogs.c_act_code ) as c_act_code,   \n\t\t( cogs.d_date ) as d_date,   \n\t\tSUM( cogs.n_amount ) as n_amount,   \n\t\t( cogs.c_opp_act_code ) as c_opp_act_code,   \n\t\t( cogs.c_ref_br_code ) as c_ref_br_code,\n\t\t( cogs.c_ref_no ) as c_ref_no,   \n\t\t( cogs.d_chq_date) as d_chq_date,   \n\t\t( cogs.c_remark ) as c_remark,   \n\t\t( cogs.c_act_name ) as c_act_name,   \n\t\t( cogs.c_opp_act_name ) as c_opp_act_name,\n\t\t( cogs.c_add_1 ) as c_add_1,\n\t\t( cogs.c_add_2 ) as c_add_2, \n\t\t( cogs.c_add_3 ) as c_add_3,\n\t\t( cogs.c_city ) as c_city,\n\t\t( cogs.n_ref_srno ) as n_ref_srno,\n\t\t( cogs.n_order_no ) as n_order_no,\n\t\t( cogs.recon_dt) as recon_dt,\n\t\t( if recon_dt is null then 0 else 1 endif ) as chq_pass,\n\t\t( cogs.multi_act_name) as multi_act_name,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\nFrom\n(\n\tSELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('701') = 6 and c_code = '701' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('701')<> 6 and c_code >= (if '701' = 'zzz' then '701' else '701' endif ) and ( c_code <= '701' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC794' ) and \n         ( ledger.c_act_code <= 'GC794' )   and\n\t\t\t( ledger.n_amount <> 0) )\n\tUnion All\n\t SELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM cogs_ledger as ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('701') = 6 and c_code = '701' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('701')<> 6 and c_code >= (if '701' = 'zzz' then '701' else '701' endif ) and ( c_code <= '701' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC794' ) and \n         ( ledger.c_act_code <= 'GC794' )   and\n\t\t\t( ledger.n_amount <> 0) ) --and :li_cogs =1\n) as cogs \nGroup By c_br_code,c_year,c_prefix,n_tran_no,c_act_code,d_date,c_opp_act_code,c_ref_br_code,c_ref_no,   \n\t\td_chq_date,c_remark,c_act_name,c_opp_act_name,c_add_1,c_add_2,c_add_3,c_city,n_ref_srno,\n\t\tn_order_no,recon_dt,multi_act_name\nUNION   ALL\n  SELECT ('') as c_br_code,\n\t\t\t('00') as c_year,   \n         ('OP') as c_prefix,   \n         ( 0 ) as c_tran_no,   \n         ( ledger.c_act_code ) as c_act_code,   \n         ( date('2021-10-21')) as d_date,   \n         sum(ledger.n_amount) as n_amount,   \n         ( '' ) as c_opp_act_code,   \n         ( '' ) as c_ref_br_code,   \n         ( '' ) as c_ref_no,   \n         date('2021-10-21') as d_chq_date,   \n         ( '' ) as c_remark,   \n         ( act_mst.c_name ) as c_act_name,   \n         ( 'Opening Balance' ) as c_opp_act_name,\n\t\t\t( act_mst.c_add_1 )  as c_add_1,\n\t\t\t( act_mst.c_add_2 )  as c_add_2, \n\t\t\t( act_mst.c_add_3 )  as c_add_3,\n\t\t\t( act_mst.c_city ) as c_city,\n\t\t\t(0) as n_ref_srno,\n\t\t\t(0) as n_order_no,\n\t\t\t( null )  as recon_dt,\n\t\t\t( 0 )  \tas chq_pass,\n\t\t\t( '' ) as multi_act_name\t,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\n    FROM dba.ledger\n\t\t\t\tinner join (select c_br_code as brcode from dba.branch_group_det where length('701') = 6 and c_code = '701' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from dba.act_mst where length('701')<> 6 and c_code >= (if '701' = 'zzz' then '701' else '701' endif ) and ( c_code <= '701' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code,  \n         act_mst  \n   WHERE ( act_mst.c_code = ledger.c_act_code ) and  \n         ( ( ledger.d_date <= getDate() ) and\t\n         ( ledger.c_act_code >= 'GC794' ) and\t\n         ( ledger.c_act_code <= 'GC794' ) )   \nGROUP BY c_act_code,c_act_name,c_add_1,c_add_2,c_add_3,c_city\n\n\nUNION\n\n\nSelect ( cogs.c_br_code ) as c_br_code,\n\t\t( cogs.c_year ) as c_year,   \n\t\t( cogs.c_prefix ) as c_prefix,   \n\t\t( cogs.n_tran_no ) as n_tran_no,   \n\t\t( cogs.c_act_code ) as c_act_code,   \n\t\t( cogs.d_date ) as d_date,   \n\t\tSUM( cogs.n_amount ) as n_amount,   \n\t\t( cogs.c_opp_act_code ) as c_opp_act_code,   \n\t\t( cogs.c_ref_br_code ) as c_ref_br_code,\n\t\t( cogs.c_ref_no ) as c_ref_no,   \n\t\t( cogs.d_chq_date) as d_chq_date,   \n\t\t( cogs.c_remark ) as c_remark,   \n\t\t( cogs.c_act_name ) as c_act_name,   \n\t\t( cogs.c_opp_act_name ) as c_opp_act_name,\n\t\t( cogs.c_add_1 ) as c_add_1,\n\t\t( cogs.c_add_2 ) as c_add_2, \n\t\t( cogs.c_add_3 ) as c_add_3,\n\t\t( cogs.c_city ) as c_city,\n\t\t( cogs.n_ref_srno ) as n_ref_srno,\n\t\t( cogs.n_order_no ) as n_order_no,\n\t\t( cogs.recon_dt) as recon_dt,\n\t\t( if recon_dt is null then 0 else 1 endif ) as chq_pass,\n\t\t( cogs.multi_act_name) as multi_act_name,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\nFrom\n(\n\tSELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC794' ) and \n         ( ledger.c_act_code <= 'GC794' )   and\n\t\t\t( ledger.n_amount <> 0) )\n\tUnion All\n\t SELECT ( ledger.c_br_code ) as c_br_code,\n\t\t\t( ledger.c_year ) as c_year,   \n\t\t\t( ledger.c_prefix ) as c_prefix,   \n\t\t\t( ledger.n_tran_no ) as n_tran_no,   \n\t\t\t( ledger.c_act_code ) as c_act_code,   \n\t\t\t( ledger.d_date ) as d_date,   \n\t\t\t( ledger.n_amount ) as n_amount,   \n\t\t\t( ledger.c_opp_act_code ) as c_opp_act_code,   \n\t\t\t( ledger.c_ref_br_code ) as c_ref_br_code,\n\t\t\t( settle_mst_header.c_ref_no ) as c_ref_no,   \n\t\t\tdate(settle_mst_header.d_ref_date) as d_chq_date,   \n\t\t\t( settle_mst_header.c_remark ) as c_remark,   \n\t\t\t( act_mst_a.c_name ) as c_act_name,   \n\t\t\t( act_mst_b.c_name ) as c_opp_act_name,\n\t\t\t( act_mst_a.c_add_1 ) as c_add_1,\n\t\t\t( act_mst_a.c_add_2 ) as c_add_2, \n\t\t\t( act_mst_a.c_add_3 ) as c_add_3,\n\t\t\t( act_mst_a.c_city ) as c_city,\n\t\t\t( grn_mst.n_ref_srno ) as n_ref_srno,\n\t\t\t( gdn_mst.n_order_no ) as n_order_no,\n\t\t\t(d_reconcile_date) as recon_dt,\n\t\t\t(if recon_dt is null then 0 else 1 endif) as chq_pass,\n\t\t\tif ledger.c_opp_act_code='~~~~~~~~~~~~' then \n\t\t\t\t(select list(ac.c_name+' : '+string(n_amount),char(13)) from ledger ll , act_mst ac  where ac.c_code=ll.c_act_code and\n\t\t\t\t\t\tll.c_br_code=ledger.c_br_code and ll.c_year=ledger.c_year\n\t\t\t\t\t\tand ll.c_prefix=ledger.c_prefix and ll.n_tran_no=ledger.n_tran_no and \n\t\t\t\t\t\t(ledger.n_amount<0 and ll.n_amount>0 or ledger.n_amount>0 and ll.n_amount<0))\n\t\t\telse '' endif as multi_act_name\n    FROM cogs_ledger as ledger\n\t\t\t\tinner join (select c_br_code as brcode from branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code  \n\t\t\tleft outer join settle_mst_header  on  ledger.c_br_code = settle_mst_header.c_br_code  and \n\t\t\t ledger.c_year = settle_mst_header.c_year  and \n          ledger.c_prefix = settle_mst_header.c_prefix  and \n          ledger.n_tran_no = settle_mst_header.n_srno  \n          left outer join grn_mst on  ledger.c_br_code = grn_mst.c_br_code  and \n\t\t\t\tledger.c_year = grn_mst.c_year  and \n\t\t\t\tledger.c_prefix = grn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = grn_mst.n_srno\n\t\t\tleft outer join gdn_mst  on  ledger.c_br_code = gdn_mst.c_br_code  and \n\t\t\t\tledger.c_year = gdn_mst.c_year  and \n\t\t\t\tledger.c_prefix = gdn_mst.c_prefix  and \n\t\t\t\tledger.n_tran_no = gdn_mst.n_srno\n\t\t\t\tleft outer join reconcile_mst  on  ledger.c_br_code= reconcile_mst.c_br_code and ledger.c_year = reconcile_mst.c_year and\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  ledger.c_prefix = reconcile_mst.c_prefix and  ledger.n_tran_no = reconcile_mst.n_srno, \n          act_mst act_mst_a,   \n         act_mst act_mst_b  \n   WHERE \n         ( act_mst_a.c_code = ledger.c_act_code ) and \n         ( act_mst_b.c_code = ledger.c_opp_act_code ) and\t\n         ( ( ledger.d_date >= '2021-10-01' ) and\t\n         ( ledger.d_date <= getDate() ) and \n         ( ledger.c_act_code >= 'GC794' ) and \n         ( ledger.c_act_code <= 'GC794' )   and\n\t\t\t( ledger.n_amount <> 0) ) --and :li_cogs =1\n) as cogs \nGroup By c_br_code,c_year,c_prefix,n_tran_no,c_act_code,d_date,c_opp_act_code,c_ref_br_code,c_ref_no,   \n\t\td_chq_date,c_remark,c_act_name,c_opp_act_name,c_add_1,c_add_2,c_add_3,c_city,n_ref_srno,\n\t\tn_order_no,recon_dt,multi_act_name\nUNION   ALL\n  SELECT ('') as c_br_code,\n\t\t\t('00') as c_year,   \n         ('OP') as c_prefix,   \n         ( 0 ) as c_tran_no,   \n         ( ledger.c_act_code ) as c_act_code,   \n         ( date('2021-10-21')) as d_date,   \n         sum(ledger.n_amount) as n_amount,   \n         ( '' ) as c_opp_act_code,   \n         ( '' ) as c_ref_br_code,   \n         ( '' ) as c_ref_no,   \n         date('2021-10-21') as d_chq_date,   \n         ( '' ) as c_remark,   \n         ( act_mst.c_name ) as c_act_name,   \n         ( 'Opening Balance' ) as c_opp_act_name,\n\t\t\t( act_mst.c_add_1 )  as c_add_1,\n\t\t\t( act_mst.c_add_2 )  as c_add_2, \n\t\t\t( act_mst.c_add_3 )  as c_add_3,\n\t\t\t( act_mst.c_city ) as c_city,\n\t\t\t(0) as n_ref_srno,\n\t\t\t(0) as n_order_no,\n\t\t\t( null )  as recon_dt,\n\t\t\t( 0 )  \tas chq_pass,\n\t\t\t( '' ) as multi_act_name\t,\n\t\tisnull( case when n_amount  > 0 then n_amount else 0 end,0) as Debit,\n\t\tisnull( case when n_amount  < 0 then n_amount else 0 end,0) as credit\n    FROM dba.ledger\n\t\t\t\tinner join (select c_br_code as brcode from dba.branch_group_det where length('751') = 6 and c_code = '751' and  branch_group_det.n_cancel_flag = 0 \n            union \n            select c_code from dba.act_mst where length('751')<> 6 and c_code >= (if '751' = 'zzz' then '751' else '751' endif ) and ( c_code <= '751' ) \n            ) brlist on brlist.brcode=ledger.c_ref_br_code,  \n         act_mst  \n   WHERE ( act_mst.c_code = ledger.c_act_code ) and  \n         ( ( ledger.d_date <= getDate() ) and\t\n         ( ledger.c_act_code >= 'GC794' ) and\t\n         ( ledger.c_act_code <= 'GC794' ) )   \nGROUP BY c_act_code,c_act_name,c_add_1,c_add_2,c_add_3,c_city"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_Ecogreenv2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ExcelOutPutFile",
+								"type": "DatasetReference",
+								"parameters": {
+									"FileName": "paytemMPR"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Excel OR CSV Dump"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-02-04T06:15:13Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Fill Ratio Backup')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -4747,13 +4821,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Full Load Mega Menu')]",
+			"name": "[concat(parameters('factoryName'), '/Full Load Mega Menu Updated')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy data mega menu",
+						"name": "Copy data Mega Menu Query to Staging",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -4767,11 +4841,12 @@
 						"typeProperties": {
 							"source": {
 								"type": "MySqlSource",
-								"query": "SELECT DISTINCT(wp.`item_code`)\n,wp.`item_fullname`\n,cm.channel_id\n,wc.`category_name`\n,wc.`level`\nFROM wellnessDB.`product` wp\nLEFT JOIN wellnessDB.`channel_publish` cp ON wp.`product_id` = cp.`product_id`\nLEFT JOIN wellnessDB.`channel_master` cm ON cp.`channel_id` = cm.`channel_id`\nLEFT JOIN wellnessDB.`category_channel_mappings` ccm ON wp.`product_id` = ccm.`product_id`\nLEFT JOIN wellnessDB.`category` wc ON ccm.`category_id` = wc.`category_id`\nWHERE wp.`is_main_product` = 0 and cm.channel_id in(1,2) and wc.`category_name` not like 'DEFAULT%'\nORDER BY wp.`item_fullname` ASC"
+								"query": "SELECT DISTINCT(wp.`item_code`)\n,wp.`item_fullname`\n,wp.product_id\n,wc.`category_id`\n,ccm.channel_id\n,wc.`category_name`\n,wc.`level`\nFROM wellnessDB.`product` wp\nLEFT JOIN wellnessDB.`channel_publish` cp ON wp.`product_id` = cp.`product_id`\nLEFT JOIN wellnessDB.`category_channel_mappings` ccm ON wp.`product_id` = ccm.`product_id`\nLEFT JOIN wellnessDB.`category` wc ON ccm.`category_id` = wc.`category_id`\nWHERE wp.`is_main_product` = 0 AND ccm.channel_id IN(1,2) \nORDER BY wp.`item_fullname` ASC"
 							},
 							"sink": {
 								"type": "SqlServerSink",
-								"preCopyScript": "truncate table Mega_Menu_Staging;",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
 								"tableOption": "autoCreate"
 							},
 							"enableStaging": false,
@@ -4793,40 +4868,11 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Mega_Menu_OutputTable",
+								"referenceName": "SQL_MegaMenuStag",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						]
-					},
-					{
-						"name": "Copy data mega menu Failure Mail",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Copy data mega menu",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod-03.centralindia.logic.azure.com:443/workflows/464eb5db81654a119fbde64f7815052d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mF2jqmQWzHvsdtjGxGf4ajGCuU9BPmu1x3S0gtBtHF8",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"value": "{\n\"Process\":\"Copy data mega menu Failure Mail\",\n\"Pipeline\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"ErrorMessage\":\"@{activity('Copy data mega menu').Error.Message}\",\n\"Runid\":\"@{pipeline().RunId}\"\n}",
-								"type": "Expression"
-							}
-						}
 					}
 				],
 				"policy": {
@@ -4836,155 +4882,7 @@
 				"folder": {
 					"name": "Mega Menu"
 				},
-				"annotations": [],
-				"lastPublishTime": "2021-12-13T08:22:34Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Full Load OMS Order Details')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "MySQL to SQL server",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "MySqlSource",
-								"query": "SELECT DISTINCT\n ws.sale_id AS Order_Id\n,ws.sale_code\n,ws.created_date AS Order_Date\n,STR_TO_DATE(ws.processing_date,'%Y-%m-%d %H:%i:%s') as processing_date\n,STR_TO_DATE(ws.invoice_date,'%Y-%m-%d %H:%i:%s') as invoice_date\n,ws.user_name AS Customer_Name\n,ws.Customer_id\n,ws.store_id\n,wd.rx_type AS RX_type\n,wd.product_id\n,wd.mrp\n,wd.price\n,wd.quantity\n,ws.coupon_discount AS discount_on_order\n,ws.coupon_code\n,ws.grand_total\n,ws.order_invoice_amt\n,ws.txn_status\n,ws.payment_type AS Payment_mode\n,ws.online_TXN\n,ws.ERP_transactionid AS ERP_Id\n,ws.order_invoice_no AS Invoice_no\n,ws.delivery_status AS Order_Status\n,ws.partial_invoice\n,ws.DMS_jobid\n,ws.dman_id\n,ws.dman_name\n,ws.thirdPartyJobStatus\n,ws.three_pl_name\n,STR_TO_DATE(ws.DMS_eta_IST,'%Y-%m-%d %H:%i:%s') AS Actual_Delivery_date\n,STR_TO_DATE(ws.delivered_date,'%Y-%m-%d %H:%i:%s') AS Delivered_date\n,ws.cancel_reason\n,ws.remark\n,ws.MFM_timeframe\n,ws.sale_platform\n,ws.dman_payment_status AS Reconciled\n,ws.collected_amount AS Collected_amount\n,wd.item_code\n,concat(ws.store_id, '/', ws.sale_id, '/', wd.item_code) as brcode_orderid_itemcode_key\n,ws.order_parent_id\n,ws.buyer\nFROM  wellnessDB.order_details wd\nLEFT JOIN wellnessDB.sale ws ON wd.sale_id = ws.sale_id\nWHERE ws.created_date BETWEEN ('2020-04-01') AND ('2021-12-14')\nAND wd.status = 1\nORDER BY ws.sale_id ASC;"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"preCopyScript": "truncate table oms_order_details",
-								"tableOption": "autoCreate"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "OMSMySqlTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "OMSSqlServerTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Add columns",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "MySQL to SQL server",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[oms_order_details_add_column]"
-						},
-						"linkedServiceName": {
-							"referenceName": "Data360MSSQL",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "SP Update Hour Bucket",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Update Order Revised Status",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[usp_OMS_Order_Details_Update_Hour_Bucket]"
-						},
-						"linkedServiceName": {
-							"referenceName": "Data360MSSQL",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Update Order Revised Status",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Add columns",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[USP_Update_Revised_Status]"
-						},
-						"linkedServiceName": {
-							"referenceName": "Data360MSSQL",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Order Details"
-				},
-				"annotations": [],
-				"lastPublishTime": "2021-12-14T15:44:53Z"
+				"annotations": []
 			},
 			"dependsOn": []
 		}
